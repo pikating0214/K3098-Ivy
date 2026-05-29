@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerry and Cindy in the City - Preview Challenge</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1f2933;
+      --muted: #5f6c7b;
+      --paper: #fffdf7;
+      --panel: #ffffff;
+      --line: #d8e0e8;
+      --city: #2563a8;
+      --leaf: #3c8f67;
+      --sun: #f2a43a;
+      --rose: #d96579;
+      --wrong: #b44b4b;
+      --right: #2e7d58;
+      --shadow: 0 12px 30px rgba(31, 41, 51, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(37, 99, 168, 0.13), rgba(255, 253, 247, 0.9) 320px),
+        var(--paper);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      width: min(1120px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      min-width: 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.7rem, 4vw, 3.3rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2.4vw, 1.2rem);
+    }
+
+    .progressBox {
+      width: min(260px, 36vw);
+      min-width: 170px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .progressText {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .progressTrack {
+      height: 10px;
+      overflow: hidden;
+      background: #e7edf3;
+      border-radius: 999px;
+    }
+
+    .progressFill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--leaf), var(--sun));
+      transition: width 0.25s ease;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 18px;
+    }
+
+    .toolBtn,
+    .listenBtn,
+    .choiceBtn,
+    .resetBtn {
+      border: 0;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .toolBtn,
+    .resetBtn {
+      min-height: 44px;
+      padding: 10px 14px;
+      color: #ffffff;
+      background: var(--city);
+      box-shadow: 0 6px 16px rgba(37, 99, 168, 0.18);
+    }
+
+    .toolBtn:active,
+    .listenBtn:active,
+    .choiceBtn:active,
+    .resetBtn:active {
+      transform: translateY(1px);
+    }
+
+    .levels {
+      display: grid;
+      gap: 18px;
+    }
+
+    .level {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .levelHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #f7fafc;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .levelTitle {
+      margin: 0;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    }
+
+    .pageListen {
+      flex: 0 0 auto;
+    }
+
+    .pictureWrap {
+      background: #eef4f9;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .bookImage {
+      display: block;
+      width: 100%;
+      max-height: 660px;
+      object-fit: contain;
+      background: #eef4f9;
+    }
+
+    .bookImage[src=""] {
+      display: none;
+    }
+
+    .imageFallback {
+      display: none;
+      min-height: 220px;
+      padding: 28px;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .pictureWrap.missing .imageFallback {
+      display: grid;
+    }
+
+    .questions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: 16px;
+    }
+
+    .questionCard {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: #ffffff;
+    }
+
+    .questionTop {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .questionText {
+      margin: 0;
+      font-size: clamp(1.02rem, 2.5vw, 1.24rem);
+      line-height: 1.28;
+      font-weight: 800;
+    }
+
+    .listenBtn {
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      display: inline-grid;
+      place-items: center;
+      color: #ffffff;
+      background: var(--rose);
+      box-shadow: 0 5px 14px rgba(217, 101, 121, 0.18);
+    }
+
+    .choices {
+      display: grid;
+      gap: 9px;
+    }
+
+    .choiceBtn {
+      width: 100%;
+      min-height: 48px;
+      padding: 10px 12px;
+      text-align: left;
+      color: var(--ink);
+      background: #f8fbfd;
+      border: 1px solid var(--line);
+    }
+
+    .choiceBtn:hover {
+      background: #eff6fb;
+    }
+
+    .choiceBtn.correct {
+      color: #ffffff;
+      background: var(--right);
+      border-color: var(--right);
+    }
+
+    .choiceBtn.wrong {
+      color: #ffffff;
+      background: var(--wrong);
+      border-color: var(--wrong);
+    }
+
+    .feedback {
+      min-height: 22px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .feedback.good {
+      color: var(--right);
+    }
+
+    .feedback.try {
+      color: var(--wrong);
+    }
+
+    .finish {
+      display: none;
+      margin-top: 18px;
+      padding: 18px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .finish.show {
+      display: block;
+    }
+
+    .finish h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.35rem, 4vw, 2rem);
+    }
+
+    .finish p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 780px) {
+      .topbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .progressBox {
+        width: 100%;
+      }
+
+      .questions {
+        grid-template-columns: 1fr;
+      }
+
+      .levelHeader {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .pageListen {
+        width: 100%;
+      }
+
+      .pageListen .toolBtn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .app {
+        width: min(100% - 18px, 1120px);
+        padding-top: 14px;
+      }
+
+      .questionTop {
+        align-items: stretch;
+      }
+
+      .listenBtn {
+        width: 42px;
+        height: 42px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="topbar" aria-label="Challenge intro">
+      <div class="brand">
+        <h1>Gerry and Cindy in the City</h1>
+        <p class="subtitle">Preview Challenge: read the picture, listen, and choose.</p>
+      </div>
+      <div class="progressBox" aria-label="Progress">
+        <div class="progressText">
+          <span>Progress</span>
+          <strong><span id="scoreNow">0</span>/<span id="scoreTotal">10</span></strong>
+        </div>
+        <div class="progressTrack">
+          <div class="progressFill" id="progressFill"></div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="toolbar" aria-label="Audio controls">
+      <button class="toolBtn" type="button" id="readTitle">Listen to Title</button>
+      <button class="toolBtn" type="button" id="readFocus">Listen to Key Sounds</button>
+    </nav>
+
+    <section class="levels" id="levels"></section>
+
+    <section class="finish" id="finishBox" aria-live="polite">
+      <h2>Challenge Complete!</h2>
+      <p>You read the pictures and answered all 10 questions.</p>
+      <button class="resetBtn" type="button" id="resetBtn">Try Again</button>
+    </section>
+  </main>
+
+  <script>
+    const challengeData = [
+      {
+        title: "Cover",
+        image: "assets/cover.JPG",
+        pageAudio: "Gerry and Cindy in the City. By Padraig Hanratty. Illustrated by Marc Diamond.",
+        missing: "Add cover.JPG here.",
+        questions: [
+          {
+            id: "q1",
+            text: "What is the title of the book?",
+            audio: "What is the title of the book?",
+            choices: ["Gerry and Cindy in the City", "Gerry and Candy in the City", "Jerry and Cindy in the Park"],
+            answer: "Gerry and Cindy in the City",
+            hint: "Look at the title on the cover."
+          },
+          {
+            id: "q2",
+            text: "Where are Gerry and Cindy?",
+            audio: "Where are Gerry and Cindy?",
+            choices: ["In the zoo", "In the city", "In the school"],
+            answer: "In the city",
+            hint: "Look at the city buildings."
+          }
+        ]
+      },
+      {
+        title: "Page 1: Van and Page",
+        image: "assets/page-1-van-page.JPG",
+        pageAudio: "Gerry has a huge van in the city. Cindy has a pencil and page in the city.",
+        missing: "Add page-1-van-page.JPG here.",
+        questions: [
+          {
+            id: "q3",
+            text: "What does Gerry have?",
+            audio: "What does Gerry have?",
+            choices: ["A pencil", "A huge van", "A dress"],
+            answer: "A huge van",
+            hint: "Look at Gerry's big vehicle."
+          },
+          {
+            id: "q4",
+            text: "What does Cindy have?",
+            audio: "What does Cindy have?",
+            choices: ["Juice with ice", "A huge van", "A pencil and page"],
+            answer: "A pencil and page",
+            hint: "Look at Cindy's hand and paper."
+          }
+        ]
+      },
+      {
+        title: "Page 2: Bridge and Dress",
+        image: "assets/page-2-bridge-dress.JPG",
+        pageAudio: "Gerry makes a giant bridge. Cindy makes a nice dress with lace.",
+        missing: "Add page-2-bridge-dress.JPG here.",
+        questions: [
+          {
+            id: "q5",
+            text: "What does Gerry make?",
+            audio: "What does Gerry make?",
+            choices: ["A nice dress", "A giant bridge", "A race"],
+            answer: "A giant bridge",
+            hint: "Look at Gerry's picture of the bridge."
+          },
+          {
+            id: "q6",
+            text: "What does Cindy make?",
+            audio: "What does Cindy make?",
+            choices: ["A huge van", "A nice dress with lace", "Juice with ice"],
+            answer: "A nice dress with lace",
+            hint: "Look at Cindy's dress."
+          }
+        ]
+      },
+      {
+        title: "Page 3: Juice and Rice",
+        image: "assets/page-3-juice-rice.JPG",
+        pageAudio: "Gerry has juice with ice. Cindy has celery with rice.",
+        missing: "Add page-3-juice-rice.JPG here.",
+        questions: [
+          {
+            id: "q7",
+            text: "What does Gerry drink?",
+            audio: "What does Gerry drink?",
+            choices: ["Water with rice", "Milk with celery", "Juice with ice"],
+            answer: "Juice with ice",
+            hint: "Look at Gerry's drink."
+          },
+          {
+            id: "q8",
+            text: "What does Cindy eat?",
+            audio: "What does Cindy eat?",
+            choices: ["A nice dress", "Celery with rice", "Juice with ice"],
+            answer: "Celery with rice",
+            hint: "Look at Cindy's food."
+          }
+        ]
+      },
+      {
+        title: "Page 4: Race and Stage",
+        image: "assets/page-4-race-stage.JPG",
+        pageAudio: "Gerry runs in a race. Cindy dances on a stage.",
+        missing: "Add page-4-race-stage.JPG here.",
+        questions: [
+          {
+            id: "q9",
+            text: "What does Gerry do?",
+            audio: "What does Gerry do?",
+            choices: ["He makes rice.", "He runs in a race.", "He drives a van."],
+            answer: "He runs in a race.",
+            hint: "Look at Gerry running."
+          },
+          {
+            id: "q10",
+            text: "What does Cindy do?",
+            audio: "What does Cindy do?",
+            choices: ["She runs in a race.", "She drives a van.", "She dances on a stage."],
+            answer: "She dances on a stage.",
+            hint: "Look at Cindy on the stage."
+          }
+        ]
+      }
+    ];
+
+    const answered = new Set();
+    const levelsEl = document.querySelector("#levels");
+    const scoreNowEl = document.querySelector("#scoreNow");
+    const scoreTotalEl = document.querySelector("#scoreTotal");
+    const progressFillEl = document.querySelector("#progressFill");
+    const finishBoxEl = document.querySelector("#finishBox");
+    const totalQuestions = challengeData.reduce((sum, level) => sum + level.questions.length, 0);
+
+    function speak(text) {
+      if (!("speechSynthesis" in window)) {
+        alert("This browser does not support audio reading.");
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find((voice) =>
+        /Samantha|Karen|Google US English|Microsoft Aria|Microsoft Jenny/i.test(voice.name)
+      );
+
+      if (preferred) {
+        utterance.voice = preferred;
+      }
+
+      utterance.lang = "en-US";
+      utterance.rate = 0.86;
+      utterance.pitch = 1.05;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function updateProgress() {
+      const count = answered.size;
+      scoreTotalEl.textContent = totalQuestions;
+      scoreNowEl.textContent = count;
+      progressFillEl.style.width = `${(count / totalQuestions) * 100}%`;
+      finishBoxEl.classList.toggle("show", count === totalQuestions);
+    }
+
+    function markChoice(question, card, button) {
+      const buttons = card.querySelectorAll(".choiceBtn");
+      const feedback = card.querySelector(".feedback");
+      buttons.forEach((choice) => choice.classList.remove("correct", "wrong"));
+
+      if (button.dataset.choice === question.answer) {
+        button.classList.add("correct");
+        feedback.textContent = "Great reading!";
+        feedback.className = "feedback good";
+        answered.add(question.id);
+        buttons.forEach((choice) => {
+          choice.disabled = true;
+          if (choice !== button) {
+            choice.style.opacity = "0.62";
+          }
+        });
+      } else {
+        button.classList.add("wrong");
+        feedback.textContent = question.hint;
+        feedback.className = "feedback try";
+      }
+
+      updateProgress();
+    }
+
+    function createQuestionCard(question) {
+      const card = document.createElement("article");
+      card.className = "questionCard";
+      card.innerHTML = `
+        <div class="questionTop">
+          <p class="questionText">${question.text}</p>
+          <button class="listenBtn" type="button" aria-label="Listen to question">▶</button>
+        </div>
+        <div class="choices"></div>
+        <p class="feedback" aria-live="polite"></p>
+      `;
+
+      card.querySelector(".listenBtn").addEventListener("click", () => speak(question.audio));
+      const choicesEl = card.querySelector(".choices");
+
+      question.choices.forEach((choice) => {
+        const button = document.createElement("button");
+        button.className = "choiceBtn";
+        button.type = "button";
+        button.textContent = choice;
+        button.dataset.choice = choice;
+        button.addEventListener("click", () => markChoice(question, card, button));
+        choicesEl.appendChild(button);
+      });
+
+      return card;
+    }
+
+    function renderLevels() {
+      levelsEl.innerHTML = "";
+      challengeData.forEach((level, index) => {
+        const section = document.createElement("section");
+        section.className = "level";
+        section.innerHTML = `
+          <div class="levelHeader">
+            <h2 class="levelTitle">Level ${index + 1}: ${level.title}</h2>
+            <div class="pageListen">
+              <button class="toolBtn" type="button">Listen to Page</button>
+            </div>
+          </div>
+          <div class="pictureWrap">
+            <img class="bookImage" src="${level.image}" alt="${level.title}">
+            <div class="imageFallback">${level.missing}</div>
+          </div>
+          <div class="questions"></div>
+        `;
+
+        section.querySelector(".toolBtn").addEventListener("click", () => speak(level.pageAudio));
+        const pictureWrap = section.querySelector(".pictureWrap");
+        const image = section.querySelector(".bookImage");
+        image.addEventListener("error", () => {
+          image.remove();
+          pictureWrap.classList.add("missing");
+        });
+
+        const questionsEl = section.querySelector(".questions");
+        level.questions.forEach((question) => {
+          questionsEl.appendChild(createQuestionCard(question));
+        });
+
+        levelsEl.appendChild(section);
+      });
+    }
+
+    document.querySelector("#readTitle").addEventListener("click", () => {
+      speak("Gerry and Cindy in the City.");
+    });
+
+    document.querySelector("#readFocus").addEventListener("click", () => {
+      speak("Listen for soft c and soft g words. City. Cindy. Nice. Lace. Giant. Gerry.");
+    });
+
+    document.querySelector("#resetBtn").addEventListener("click", () => {
+      answered.clear();
+      renderLevels();
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    window.speechSynthesis?.addEventListener?.("voiceschanged", () => {});
+    renderLevels();
+    updateProgress();
+  </script>
+</body>
+</html>
