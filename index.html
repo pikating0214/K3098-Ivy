@@ -408,57 +408,126 @@
 
     .matchBoard {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
     }
 
-    .matchColumn {
+    .matchHelp {
       display: grid;
       gap: 10px;
-      align-content: start;
-    }
-
-    .matchLabel {
-      margin: 0;
-      color: var(--muted);
-      font-weight: 900;
-      text-align: center;
-    }
-
-    .matchCard {
-      min-height: 58px;
-      padding: 10px;
-      border: 2px solid #d8e7eb;
+      padding: 12px;
+      border: 2px solid rgba(29, 123, 155, 0.16);
       border-radius: 8px;
-      background: #f7fbfd;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .matchHelpTitle {
+      margin: 0;
       color: var(--ink);
-      cursor: pointer;
       font-size: clamp(1.05rem, 3vw, 1.35rem);
       font-weight: 900;
       text-align: center;
-      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
     }
 
-    .matchCard:active {
-      transform: translateY(1px);
+    .matchSteps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
     }
 
-    .matchCard.selected {
+    .matchStep {
+      display: grid;
+      place-items: center;
+      min-height: 48px;
+      padding: 8px;
+      border-radius: 8px;
+      color: #155063;
+      background: #e9f7fb;
+      font-size: 0.92rem;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .matchGrid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .matchCard {
+      position: relative;
+      min-height: 76px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      perspective: 700px;
+    }
+
+    .matchCardInner {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.28s ease;
+      transform-style: preserve-3d;
+    }
+
+    .matchCard.is-flipped .matchCardInner,
+    .matchCard.correct .matchCardInner {
+      transform: rotateY(180deg);
+    }
+
+    .matchFace {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 8px;
+      border: 2px solid #d8e7eb;
+      border-radius: 8px;
+      backface-visibility: hidden;
+      font-size: clamp(1.05rem, 3vw, 1.35rem);
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .matchBack {
+      color: #ffffff;
+      background: linear-gradient(145deg, #1d7b9b, #29886f);
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: inset 0 -8px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .matchFront {
+      background: #f7fbfd;
+      transform: rotateY(180deg);
+    }
+
+    .matchCard.selected .matchFront {
       border-color: var(--gold);
       background: #fff1bd;
       box-shadow: 0 0 0 4px rgba(244, 182, 62, 0.18);
     }
 
-    .matchCard.correct {
+    .matchCard.correct .matchFront {
       color: #ffffff;
       background: var(--good);
       border-color: var(--good);
     }
 
     .matchCard.wrong {
+      animation: shake 0.28s ease;
+    }
+
+    .matchCard.wrong .matchFront {
       color: #ffffff;
       background: var(--bad);
       border-color: var(--bad);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
     }
 
     .choice.correct {
@@ -610,8 +679,13 @@
         grid-template-columns: 1fr;
       }
 
-      .matchBoard {
-        grid-template-columns: 1fr;
+      .matchSteps,
+      .matchGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .matchStep {
+        min-height: 44px;
       }
     }
   </style>
@@ -849,25 +923,22 @@
       }
     }
 
-    function chooseMatch(side, item, button, board) {
+    function chooseMatch(item, button, board) {
       if (button.classList.contains("correct")) return;
+      if (board.dataset.locked === "true") return;
+      if (selectedMatch?.button === button) return;
 
-      if (side === "left") {
-        board.querySelectorAll(".matchCard[data-side='left']").forEach((card) => card.classList.remove("selected"));
+      button.classList.add("is-flipped");
+
+      if (!selectedMatch) {
         selectedMatch = { item, button };
         button.classList.add("selected");
         return;
       }
 
-      if (!selectedMatch) {
-        button.classList.add("wrong");
-        setTimeout(() => button.classList.remove("wrong"), 360);
-        return;
-      }
-
       if (selectedMatch.item.word === item.word) {
-        button.classList.add("correct");
         selectedMatch.button.classList.remove("selected");
+        button.classList.add("correct");
         selectedMatch.button.classList.add("correct");
         answered.add(item.id);
         speak(item.audio);
@@ -878,13 +949,15 @@
         if (wasLast) playWinSound();
       } else {
         const wrongLeft = selectedMatch.button;
+        board.dataset.locked = "true";
         button.classList.add("wrong");
         wrongLeft.classList.add("wrong");
         setTimeout(() => {
-          button.classList.remove("wrong");
-          wrongLeft.classList.remove("wrong", "selected");
+          button.classList.remove("wrong", "is-flipped");
+          wrongLeft.classList.remove("wrong", "selected", "is-flipped");
           if (selectedMatch?.button === wrongLeft) selectedMatch = null;
-        }, 480);
+          board.dataset.locked = "false";
+        }, 700);
         return;
       }
 
@@ -921,39 +994,40 @@
     function renderMatching(level) {
       const board = document.createElement("div");
       board.className = "matchBoard";
-      const leftItems = [...level.matchItems];
-      const rightItems = [level.matchItems[2], level.matchItems[5], level.matchItems[0], level.matchItems[6], level.matchItems[1], level.matchItems[4], level.matchItems[3]];
+      const cardItems = [
+        level.matchItems[0], level.matchItems[3], level.matchItems[1], level.matchItems[5],
+        level.matchItems[2], level.matchItems[6], level.matchItems[4], level.matchItems[0],
+        level.matchItems[5], level.matchItems[2], level.matchItems[1], level.matchItems[4],
+        level.matchItems[6], level.matchItems[3]
+      ];
 
       board.innerHTML = `
-        <div class="matchColumn">
-          <p class="matchLabel">Treasure Words</p>
+        <div class="matchHelp">
+          <p class="matchHelpTitle">Tap two cards. Match the same word to collect a gem.</p>
+          <div class="matchSteps" aria-label="How to play">
+            <div class="matchStep">1. Tap one card</div>
+            <div class="matchStep">2. Tap the same word</div>
+            <div class="matchStep">3. Collect a gem</div>
+          </div>
         </div>
-        <div class="matchColumn">
-          <p class="matchLabel">Find the Match</p>
-        </div>
+        <div class="matchGrid" aria-label="Word matching cards"></div>
       `;
 
-      const leftColumn = board.children[0];
-      const rightColumn = board.children[1];
+      const grid = board.querySelector(".matchGrid");
 
-      leftItems.forEach((item) => {
+      cardItems.forEach((item, index) => {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "matchCard";
-        button.dataset.side = "left";
-        button.textContent = item.word;
-        button.addEventListener("click", () => chooseMatch("left", item, button, board));
-        leftColumn.appendChild(button);
-      });
-
-      rightItems.forEach((item) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "matchCard";
-        button.dataset.side = "right";
-        button.textContent = item.word;
-        button.addEventListener("click", () => chooseMatch("right", item, button, board));
-        rightColumn.appendChild(button);
+        button.setAttribute("aria-label", `Card ${index + 1}`);
+        button.innerHTML = `
+          <span class="matchCardInner">
+            <span class="matchFace matchBack" aria-hidden="true">💎</span>
+            <span class="matchFace matchFront">${item.word}</span>
+          </span>
+        `;
+        button.addEventListener("click", () => chooseMatch(item, button, board));
+        grid.appendChild(button);
       });
 
       return board;
