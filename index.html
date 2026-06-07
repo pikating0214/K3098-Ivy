@@ -3,22 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerry and Cindy in the City - Preview Challenge</title>
+  <title>Treasure Hunt Grammar Quest</title>
   <style>
     :root {
       color-scheme: light;
-      --ink: #1f2933;
-      --muted: #5f6c7b;
-      --paper: #fffdf7;
+      --ink: #25313d;
+      --muted: #5b6b78;
+      --sand: #fff4cf;
+      --paper: #fffdf5;
       --panel: #ffffff;
-      --line: #d8e0e8;
-      --city: #2563a8;
-      --leaf: #3c8f67;
-      --sun: #f2a43a;
-      --rose: #d96579;
-      --wrong: #b44b4b;
-      --right: #2e7d58;
-      --shadow: 0 12px 30px rgba(31, 41, 51, 0.12);
+      --sea: #1d7b9b;
+      --leaf: #2f8a58;
+      --gold: #f4b63e;
+      --coral: #d9584b;
+      --ruby: #c73559;
+      --line: #d9cda4;
+      --good: #287d55;
+      --bad: #a8443d;
+      --shadow: 0 16px 38px rgba(48, 42, 22, 0.16);
     }
 
     * {
@@ -27,500 +29,697 @@
 
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
       color: var(--ink);
       background:
-        linear-gradient(180deg, rgba(37, 99, 168, 0.13), rgba(255, 253, 247, 0.9) 320px),
-        var(--paper);
+        radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.8) 0 7%, transparent 8%),
+        linear-gradient(180deg, #87d7e5 0, #bfeadc 260px, var(--sand) 261px, #fffbec 100%);
+      overflow-x: hidden;
     }
 
     button {
       font: inherit;
     }
 
-    .app {
-      width: min(1120px, calc(100% - 28px));
+    .shell {
+      width: min(1120px, calc(100% - 24px));
       margin: 0 auto;
-      padding: 24px 0 40px;
+      padding: 20px 0 44px;
     }
 
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .brand {
-      min-width: 0;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(1.7rem, 4vw, 3.3rem);
-      line-height: 1.05;
-      letter-spacing: 0;
-    }
-
-    .subtitle {
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: clamp(0.98rem, 2.4vw, 1.2rem);
-    }
-
-    .progressBox {
-      width: min(260px, 36vw);
-      min-width: 170px;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.78);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-    }
-
-    .progressText {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 8px;
-    }
-
-    .progressTrack {
-      height: 10px;
-      overflow: hidden;
-      background: #e7edf3;
-      border-radius: 999px;
-    }
-
-    .progressFill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--leaf), var(--sun));
-      transition: width 0.25s ease;
-    }
-
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 0 0 18px;
-    }
-
-    .toolBtn,
-    .listenBtn,
-    .choiceBtn,
-    .resetBtn {
-      border: 0;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-    }
-
-    .toolBtn,
-    .resetBtn {
-      min-height: 44px;
-      padding: 10px 14px;
-      color: #ffffff;
-      background: var(--city);
-      box-shadow: 0 6px 16px rgba(37, 99, 168, 0.18);
-    }
-
-    .toolBtn:active,
-    .listenBtn:active,
-    .choiceBtn:active,
-    .resetBtn:active {
-      transform: translateY(1px);
-    }
-
-    .levels {
+    .hero {
+      position: relative;
       display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 18px;
-    }
-
-    .level {
-      background: var(--panel);
-      border: 1px solid var(--line);
+      align-items: center;
+      padding: 22px;
+      border: 2px solid rgba(132, 91, 38, 0.24);
       border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255, 249, 219, 0.92)),
+        repeating-linear-gradient(45deg, transparent 0 28px, rgba(244, 182, 62, 0.11) 29px 31px);
       box-shadow: var(--shadow);
       overflow: hidden;
     }
 
-    .levelHeader {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -42px;
+      bottom: -54px;
+      width: 230px;
+      height: 170px;
+      border-radius: 50%;
+      background: rgba(29, 123, 155, 0.13);
+      transform: rotate(-12deg);
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .intro {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2.3vw, 1.2rem);
+      line-height: 1.45;
+    }
+
+    .treasureBox {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      width: min(230px, 34vw);
+      min-width: 150px;
+      aspect-ratio: 1.18;
+      padding: 12px;
+      border-radius: 8px;
+      background: #f9e8ad;
+      border: 2px solid rgba(132, 91, 38, 0.28);
+    }
+
+    .chest {
+      position: relative;
+      width: 130px;
+      height: 94px;
+      filter: drop-shadow(0 10px 10px rgba(79, 49, 10, 0.18));
+    }
+
+    .chestLid {
+      position: absolute;
+      left: 8px;
+      top: 4px;
+      width: 114px;
+      height: 44px;
+      border-radius: 48px 48px 8px 8px;
+      background: linear-gradient(#9b5a25, #6c3818);
+      border: 4px solid #3f2413;
+      transform-origin: bottom left;
+      transition: transform 0.55s ease;
+    }
+
+    .chest.open .chestLid {
+      transform: rotate(-18deg) translateY(-18px);
+    }
+
+    .chestBody {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 130px;
+      height: 64px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #7a3e1a, #b96b28 48%, #7a3e1a);
+      border: 4px solid #3f2413;
+      overflow: hidden;
+    }
+
+    .chestBody::before,
+    .chestBody::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      background: #f0bc46;
+    }
+
+    .chestBody::before {
+      left: 24px;
+    }
+
+    .chestBody::after {
+      right: 24px;
+    }
+
+    .lock {
+      position: absolute;
+      left: 50%;
+      bottom: 24px;
+      width: 28px;
+      height: 30px;
+      border-radius: 6px;
+      background: #f6c64d;
+      border: 3px solid #593716;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    .gemCount {
+      margin: 8px 0 0;
+      font-weight: 800;
+      color: #5f3b15;
+      text-align: center;
+    }
+
+    .mapPath {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .mapStep {
+      min-height: 70px;
+      padding: 10px;
+      border: 2px solid rgba(47, 138, 88, 0.28);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--muted);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .mapIcon {
+      display: block;
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+    }
+
+    .level {
+      margin-top: 18px;
+      border: 2px solid rgba(132, 91, 38, 0.22);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .levelHead {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 12px;
-      padding: 14px 16px;
-      background: #f7fafc;
-      border-bottom: 1px solid var(--line);
+      align-items: center;
+      padding: 16px;
+      background:
+        linear-gradient(90deg, rgba(47, 138, 88, 0.13), rgba(244, 182, 62, 0.16)),
+        #fffaf0;
+      border-bottom: 2px dashed rgba(132, 91, 38, 0.22);
     }
 
     .levelTitle {
       margin: 0;
-      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      font-size: clamp(1.25rem, 3vw, 1.8rem);
+      line-height: 1.12;
     }
 
-    .pageListen {
-      flex: 0 0 auto;
-    }
-
-    .pictureWrap {
-      background: #eef4f9;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .bookImage {
-      display: block;
-      width: 100%;
-      max-height: 660px;
-      object-fit: contain;
-      background: #eef4f9;
-    }
-
-    .bookImage[src=""] {
-      display: none;
-    }
-
-    .imageFallback {
-      display: none;
-      min-height: 220px;
-      padding: 28px;
-      place-items: center;
-      text-align: center;
+    .levelRule {
+      margin: 6px 0 0;
       color: var(--muted);
-      font-weight: 700;
+      line-height: 1.35;
     }
 
-    .pictureWrap.missing .imageFallback {
+    .choice,
+    .reset {
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .reset {
+      min-height: 44px;
+      padding: 10px 14px;
+      color: white;
+      background: var(--sea);
+      box-shadow: 0 8px 18px rgba(29, 123, 155, 0.18);
+      font-weight: 800;
+    }
+
+    .choice:active,
+    .reset:active {
+      transform: translateY(1px);
+    }
+
+    .scene {
       display: grid;
+      grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1fr);
+      gap: 16px;
+      padding: 16px;
+      background: #fffdf6;
+    }
+
+    .scene.questionsOnly {
+      grid-template-columns: 1fr;
+    }
+
+    .picturePanel {
+      min-height: 320px;
+      border: 2px solid rgba(29, 123, 155, 0.18);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 24% 18%, rgba(255,255,255,0.8) 0 8%, transparent 9%),
+        linear-gradient(180deg, #bce9f0 0 48%, #f7de99 49% 100%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .islandArt {
+      position: absolute;
+      inset: 0;
+    }
+
+    .sun {
+      position: absolute;
+      top: 24px;
+      right: 26px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #ffd35d;
+      box-shadow: 0 0 0 12px rgba(255, 211, 93, 0.18);
+    }
+
+    .palm {
+      position: absolute;
+      left: 24px;
+      bottom: 62px;
+      font-size: 5rem;
+      transform: rotate(-8deg);
+    }
+
+    .boat {
+      position: absolute;
+      right: 18px;
+      bottom: 76px;
+      font-size: 4.5rem;
+    }
+
+    .clueGrid {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .clue {
+      min-height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 2px solid rgba(132, 91, 38, 0.14);
+      font-size: 2rem;
     }
 
     .questions {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      padding: 16px;
+      gap: 12px;
     }
 
-    .questionCard {
-      border: 1px solid var(--line);
+    .card {
+      border: 2px solid rgba(217, 205, 164, 0.9);
       border-radius: 8px;
-      padding: 14px;
       background: #ffffff;
+      padding: 12px;
     }
 
-    .questionTop {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
+    .cardTop {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
       gap: 10px;
-      margin-bottom: 12px;
+      align-items: center;
     }
 
-    .questionText {
-      margin: 0;
-      font-size: clamp(1.02rem, 2.5vw, 1.24rem);
-      line-height: 1.28;
-      font-weight: 800;
-    }
-
-    .listenBtn {
-      flex: 0 0 auto;
-      width: 44px;
-      height: 44px;
-      display: inline-grid;
+    .miniPic {
+      width: 58px;
+      height: 58px;
+      display: grid;
       place-items: center;
-      color: #ffffff;
-      background: var(--rose);
-      box-shadow: 0 5px 14px rgba(217, 101, 121, 0.18);
+      border-radius: 8px;
+      background: #fff1bd;
+      border: 2px solid rgba(244, 182, 62, 0.45);
+      font-size: 2rem;
+      flex: 0 0 auto;
+    }
+
+    .question {
+      margin: 0;
+      font-weight: 900;
+      font-size: clamp(1rem, 2.8vw, 1.28rem);
+      line-height: 1.22;
     }
 
     .choices {
       display: grid;
-      gap: 9px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
     }
 
-    .choiceBtn {
-      width: 100%;
+    .choice {
       min-height: 48px;
-      padding: 10px 12px;
-      text-align: left;
+      padding: 10px;
       color: var(--ink);
-      background: #f8fbfd;
-      border: 1px solid var(--line);
-    }
-
-    .choiceBtn:hover {
-      background: #eff6fb;
-    }
-
-    .choiceBtn.correct {
-      color: #ffffff;
-      background: var(--right);
-      border-color: var(--right);
-    }
-
-    .choiceBtn.wrong {
-      color: #ffffff;
-      background: var(--wrong);
-      border-color: var(--wrong);
-    }
-
-    .feedback {
-      min-height: 22px;
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-weight: 700;
-      line-height: 1.3;
-    }
-
-    .feedback.good {
-      color: var(--right);
-    }
-
-    .feedback.try {
-      color: var(--wrong);
-    }
-
-    .finish {
-      display: none;
-      margin-top: 18px;
-      padding: 18px;
-      background: #ffffff;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      box-shadow: var(--shadow);
+      background: #f7fbfd;
+      border: 2px solid #d8e7eb;
+      font-weight: 900;
       text-align: center;
     }
 
-    .finish.show {
+    .choice:hover {
+      background: #eef9fb;
+    }
+
+    .questionShot {
+      display: block;
+      width: 100%;
+      max-height: 190px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      border: 2px solid rgba(29, 123, 155, 0.16);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .matchBoard {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .matchColumn {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .matchLabel {
+      margin: 0;
+      color: var(--muted);
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .matchCard {
+      min-height: 58px;
+      padding: 10px;
+      border: 2px solid #d8e7eb;
+      border-radius: 8px;
+      background: #f7fbfd;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: clamp(1.05rem, 3vw, 1.35rem);
+      font-weight: 900;
+      text-align: center;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .matchCard:active {
+      transform: translateY(1px);
+    }
+
+    .matchCard.selected {
+      border-color: var(--gold);
+      background: #fff1bd;
+      box-shadow: 0 0 0 4px rgba(244, 182, 62, 0.18);
+    }
+
+    .matchCard.correct {
+      color: #ffffff;
+      background: var(--good);
+      border-color: var(--good);
+    }
+
+    .matchCard.wrong {
+      color: #ffffff;
+      background: var(--bad);
+      border-color: var(--bad);
+    }
+
+    .choice.correct {
+      color: white;
+      background: var(--good);
+      border-color: var(--good);
+    }
+
+    .choice.wrong {
+      color: white;
+      background: var(--bad);
+      border-color: var(--bad);
+    }
+
+    .feedback {
+      min-height: 20px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-weight: 800;
+      line-height: 1.28;
+    }
+
+    .feedback.good {
+      color: var(--good);
+    }
+
+    .feedback.try {
+      color: var(--bad);
+    }
+
+    .gemFly {
+      position: fixed;
+      z-index: 20;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      animation: flyGem 760ms cubic-bezier(.18,.82,.22,1) forwards;
+    }
+
+    .spark {
+      position: fixed;
+      z-index: 19;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fff2a5;
+      pointer-events: none;
+      animation: sparkle 520ms ease-out forwards;
+    }
+
+    .complete {
+      display: none;
+      margin-top: 18px;
+      padding: 22px;
+      text-align: center;
+      border: 2px solid rgba(132, 91, 38, 0.22);
+      border-radius: 8px;
+      background: #fffef7;
+      box-shadow: var(--shadow);
+    }
+
+    .complete.show {
       display: block;
     }
 
-    .finish h2 {
+    .complete h2 {
       margin: 0 0 8px;
-      font-size: clamp(1.35rem, 4vw, 2rem);
+      font-size: clamp(1.5rem, 4vw, 2.3rem);
     }
 
-    .finish p {
-      margin: 0 0 14px;
-      color: var(--muted);
+    .coins {
+      font-size: 2.2rem;
+      animation: bounceCoins 1s ease-in-out infinite;
     }
 
-    @media (max-width: 780px) {
-      .topbar {
-        align-items: stretch;
-        flex-direction: column;
+    @keyframes flyGem {
+      0% {
+        transform: translate(0, 0) scale(0.72) rotate(0deg);
+        opacity: 0;
       }
-
-      .progressBox {
-        width: 100%;
+      15% {
+        opacity: 1;
       }
+      100% {
+        transform: translate(var(--gem-x), var(--gem-y)) scale(1.18) rotate(360deg);
+        opacity: 0;
+      }
+    }
 
-      .questions {
+    @keyframes sparkle {
+      0% {
+        transform: translate(0, 0) scale(0.8);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--spark-x), var(--spark-y)) scale(0);
+        opacity: 0;
+      }
+    }
+
+    @keyframes bounceCoins {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .scene,
+      .levelHead {
         grid-template-columns: 1fr;
       }
 
-      .levelHeader {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .pageListen {
+      .treasureBox {
         width: 100%;
       }
 
-      .pageListen .toolBtn {
-        width: 100%;
+      .mapPath {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .picturePanel {
+        min-height: 260px;
       }
     }
 
-    @media (max-width: 430px) {
-      .app {
-        width: min(100% - 18px, 1120px);
-        padding-top: 14px;
+    @media (max-width: 520px) {
+      .shell {
+        width: min(100% - 16px, 1120px);
+        padding-top: 10px;
       }
 
-      .questionTop {
-        align-items: stretch;
+      .hero,
+      .scene,
+      .levelHead {
+        padding: 12px;
       }
 
-      .listenBtn {
-        width: 42px;
-        height: 42px;
+      .mapPath {
+        grid-template-columns: 1fr;
+      }
+
+      .cardTop {
+        grid-template-columns: auto minmax(0, 1fr);
+      }
+
+      .choices {
+        grid-template-columns: 1fr;
+      }
+
+      .matchBoard {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <main class="app">
-    <section class="topbar" aria-label="Challenge intro">
-      <div class="brand">
-        <h1>Gerry and Cindy in the City</h1>
-        <p class="subtitle">Preview Challenge: read the picture, listen, and choose.</p>
+  <main class="shell">
+    <section class="hero" aria-label="Treasure hunt introduction">
+      <div>
+        <h1>Treasure Hunt Grammar Quest</h1>
+        <p class="intro">Find words, choose answers, and collect 22 gems to open the treasure chest.</p>
       </div>
-      <div class="progressBox" aria-label="Progress">
-        <div class="progressText">
-          <span>Progress</span>
-          <strong><span id="scoreNow">0</span>/<span id="scoreTotal">10</span></strong>
+      <div class="treasureBox" id="treasureTarget" aria-label="Treasure progress">
+        <div class="chest" id="chest">
+          <div class="chestLid"></div>
+          <div class="chestBody"></div>
+          <div class="lock"></div>
         </div>
-        <div class="progressTrack">
-          <div class="progressFill" id="progressFill"></div>
-        </div>
+        <div class="gemCount"><span id="gemCount">0</span>/<span id="totalCount">22</span> gems</div>
       </div>
     </section>
 
-    <nav class="toolbar" aria-label="Audio controls">
-      <button class="toolBtn" type="button" id="readTitle">Listen to Title</button>
-      <button class="toolBtn" type="button" id="readFocus">Listen to Key Sounds</button>
-    </nav>
+    <section class="mapPath" aria-label="Map steps">
+      <div class="mapStep"><span class="mapIcon">🧭</span>Find the Word</div>
+      <div class="mapStep"><span class="mapIcon">🗺️</span>Magic Map</div>
+      <div class="mapStep"><span class="mapIcon">🌉</span>River Bridge</div>
+      <div class="mapStep"><span class="mapIcon">⛰️</span>Treasure Cave</div>
+    </section>
 
-    <section class="levels" id="levels"></section>
+    <section id="levels"></section>
 
-    <section class="finish" id="finishBox" aria-live="polite">
-      <h2>Challenge Complete!</h2>
-      <p>You read the pictures and answered all 10 questions.</p>
-      <button class="resetBtn" type="button" id="resetBtn">Try Again</button>
+    <section class="complete" id="completeBox" aria-live="polite">
+      <div class="coins">💎 🪙 💎</div>
+      <h2>You found the treasure!</h2>
+      <p>Great job! You finished all 22 grammar clues.</p>
+      <button class="reset" type="button" id="resetBtn">Play Again</button>
     </section>
   </main>
 
   <script>
-    const challengeData = [
+    const levels = [
       {
-        title: "Cover",
-        image: "assets/cover.JPG",
-        pageAudio: "Gerry and Cindy in the City. By Padraig Hanratty. Illustrated by Marc Diamond.",
-        missing: "Add cover.JPG here.",
-        questions: [
-          {
-            id: "q1",
-            text: "What is the title of the book?",
-            audio: "What is the title of the book?",
-            choices: ["Gerry and Cindy in the City", "Gerry and Candy in the City", "Jerry and Cindy in the Park"],
-            answer: "Gerry and Cindy in the City",
-            hint: "Look at the title on the cover."
-          },
-          {
-            id: "q2",
-            text: "Where are Gerry and Cindy?",
-            audio: "Where are Gerry and Cindy?",
-            choices: ["In the zoo", "In the city", "In the school"],
-            answer: "In the city",
-            hint: "Look at the city buildings."
-          }
+        title: "Level 1: Find the Word",
+        rule: "Match the same treasure words.",
+        imageType: "words",
+        matchItems: [
+          { id: "m1", word: "am", audio: "am. I am a girl." },
+          { id: "m2", word: "is", audio: "is. She is a girl." },
+          { id: "m3", word: "are", audio: "are. They are cats." },
+          { id: "m4", word: "my", audio: "my. This is my ball." },
+          { id: "m5", word: "your", audio: "your. This is your teddy bear." },
+          { id: "m6", word: "do", audio: "do. Do they eat ice cream?" },
+          { id: "m7", word: "does", audio: "does. Does he play soccer?" }
         ]
       },
       {
-        title: "Page 1: Van and Page",
-        image: "assets/page-1-van-page.JPG",
-        pageAudio: "Gerry has a huge van in the city. Cindy has a pencil and page in the city.",
-        missing: "Add page-1-van-page.JPG here.",
+        title: "Level 2: Magic Map",
+        rule: "Choose am, is, or are.",
+        imageType: "island",
         questions: [
-          {
-            id: "q3",
-            text: "What does Gerry have?",
-            audio: "What does Gerry have?",
-            choices: ["A pencil", "A huge van", "A dress"],
-            answer: "A huge van",
-            hint: "Look at Gerry's big vehicle."
-          },
-          {
-            id: "q4",
-            text: "What does Cindy have?",
-            audio: "What does Cindy have?",
-            choices: ["Juice with ice", "A huge van", "A pencil and page"],
-            answer: "A pencil and page",
-            hint: "Look at Cindy's hand and paper."
-          }
+          { id: "q1", icon: "👧", text: "I ___ a girl.", choices: ["am", "is", "are"], answer: "am", complete: "I am a girl." },
+          { id: "q2", icon: "👧", text: "She ___ a girl.", choices: ["am", "is", "are"], answer: "is", complete: "She is a girl." },
+          { id: "q3", icon: "👨‍⚕️", text: "He ___ a doctor.", choices: ["am", "is", "are"], answer: "is", complete: "He is a doctor." },
+          { id: "q4", icon: "🐶", text: "It ___ a dog.", choices: ["am", "is", "are"], answer: "is", complete: "It is a dog." },
+          { id: "q5", icon: "🐱", text: "They ___ cats.", choices: ["am", "is", "are"], answer: "are", complete: "They are cats." },
+          { id: "q6", icon: "👫", text: "We ___ friends.", choices: ["am", "is", "are"], answer: "are", complete: "We are friends." }
         ]
       },
       {
-        title: "Page 2: Bridge and Dress",
-        image: "assets/page-2-bridge-dress.JPG",
-        pageAudio: "Gerry makes a giant bridge. Cindy makes a nice dress with lace.",
-        missing: "Add page-2-bridge-dress.JPG here.",
+        title: "Level 3: River Bridge",
+        rule: "Choose Do or Does.",
+        imageType: "bridge",
         questions: [
-          {
-            id: "q5",
-            text: "What does Gerry make?",
-            audio: "What does Gerry make?",
-            choices: ["A nice dress", "A giant bridge", "A race"],
-            answer: "A giant bridge",
-            hint: "Look at Gerry's picture of the bridge."
-          },
-          {
-            id: "q6",
-            text: "What does Cindy make?",
-            audio: "What does Cindy make?",
-            choices: ["A huge van", "A nice dress with lace", "Juice with ice"],
-            answer: "A nice dress with lace",
-            hint: "Look at Cindy's dress."
-          }
+          { id: "q7", icon: "⚽", text: "___ he play soccer?", choices: ["Do", "Does"], answer: "Does", complete: "Does he play soccer?" },
+          { id: "q8", icon: "📖", text: "___ she read a book?", choices: ["Do", "Does"], answer: "Does", complete: "Does she read a book?" },
+          { id: "q9", icon: "🍦", text: "___ they eat ice cream?", choices: ["Do", "Does"], answer: "Do", complete: "Do they eat ice cream?" },
+          { id: "q10", icon: "🏫", text: "___ we go to school?", choices: ["Do", "Does"], answer: "Do", complete: "Do we go to school?" }
         ]
       },
       {
-        title: "Page 3: Juice and Rice",
-        image: "assets/page-3-juice-rice.JPG",
-        pageAudio: "Gerry has juice with ice. Cindy has celery with rice.",
-        missing: "Add page-3-juice-rice.JPG here.",
+        title: "Level 4: Treasure Cave",
+        rule: "Mixed review. Find the last gems.",
+        imageType: "cave",
         questions: [
-          {
-            id: "q7",
-            text: "What does Gerry drink?",
-            audio: "What does Gerry drink?",
-            choices: ["Water with rice", "Milk with celery", "Juice with ice"],
-            answer: "Juice with ice",
-            hint: "Look at Gerry's drink."
-          },
-          {
-            id: "q8",
-            text: "What does Cindy eat?",
-            audio: "What does Cindy eat?",
-            choices: ["A nice dress", "Celery with rice", "Juice with ice"],
-            answer: "Celery with rice",
-            hint: "Look at Cindy's food."
-          }
-        ]
-      },
-      {
-        title: "Page 4: Race and Stage",
-        image: "assets/page-4-race-stage.JPG",
-        pageAudio: "Gerry runs in a race. Cindy dances on a stage.",
-        missing: "Add page-4-race-stage.JPG here.",
-        questions: [
-          {
-            id: "q9",
-            text: "What does Gerry do?",
-            audio: "What does Gerry do?",
-            choices: ["He makes rice.", "He runs in a race.", "He drives a van."],
-            answer: "He runs in a race.",
-            hint: "Look at Gerry running."
-          },
-          {
-            id: "q10",
-            text: "What does Cindy do?",
-            audio: "What does Cindy do?",
-            choices: ["She runs in a race.", "She drives a van.", "She dances on a stage."],
-            answer: "She dances on a stage.",
-            hint: "Look at Cindy on the stage."
-          }
+          { id: "q11", icon: "👩‍🏫", text: "You ___ my teacher.", choices: ["am", "is", "are"], answer: "are", complete: "You are my teacher." },
+          { id: "q12", icon: "🐱", text: "The cat ___ on the mat.", choices: ["am", "is", "are"], answer: "is", complete: "The cat is on the mat." },
+          { id: "q13", icon: "🐶", text: "___ the dog bark?", choices: ["Do", "Does"], answer: "Does", complete: "Does the dog bark?" },
+          { id: "q14", icon: "🏈", text: "___ you play football?", choices: ["Do", "Does"], answer: "Do", complete: "Do you play football?" },
+          { id: "q15", icon: "😊", text: "I ___ happy today.", choices: ["am", "is", "are"], answer: "am", complete: "I am happy today." }
         ]
       }
     ];
 
     const answered = new Set();
     const levelsEl = document.querySelector("#levels");
-    const scoreNowEl = document.querySelector("#scoreNow");
-    const scoreTotalEl = document.querySelector("#scoreTotal");
-    const progressFillEl = document.querySelector("#progressFill");
-    const finishBoxEl = document.querySelector("#finishBox");
-    const totalQuestions = challengeData.reduce((sum, level) => sum + level.questions.length, 0);
+    const gemCountEl = document.querySelector("#gemCount");
+    const totalCountEl = document.querySelector("#totalCount");
+    const treasureTarget = document.querySelector("#treasureTarget");
+    const chestEl = document.querySelector("#chest");
+    const completeBox = document.querySelector("#completeBox");
+    const totalQuestions = levels.reduce((sum, level) => {
+      return sum + (level.questions?.length || 0) + (level.matchItems?.length || 0);
+    }, 0);
+    let audioContext;
+    let selectedMatch = null;
 
     function speak(text) {
       if (!("speechSynthesis" in window)) {
-        alert("This browser does not support audio reading.");
+        alert("This browser does not support question audio.");
         return;
       }
 
@@ -531,123 +730,292 @@
         /Samantha|Karen|Google US English|Microsoft Aria|Microsoft Jenny/i.test(voice.name)
       );
 
-      if (preferred) {
-        utterance.voice = preferred;
-      }
-
+      if (preferred) utterance.voice = preferred;
       utterance.lang = "en-US";
       utterance.rate = 0.86;
-      utterance.pitch = 1.05;
+      utterance.pitch = 1.06;
       window.speechSynthesis.speak(utterance);
     }
 
-    function updateProgress() {
-      const count = answered.size;
-      scoreTotalEl.textContent = totalQuestions;
-      scoreNowEl.textContent = count;
-      progressFillEl.style.width = `${(count / totalQuestions) * 100}%`;
-      finishBoxEl.classList.toggle("show", count === totalQuestions);
+    function playGemSound() {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      audioContext = audioContext || new AudioCtx();
+      const now = audioContext.currentTime;
+      const gain = audioContext.createGain();
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.exponentialRampToValueAtTime(0.18, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
+      gain.connect(audioContext.destination);
+
+      [740, 980, 1240].forEach((freq, index) => {
+        const osc = audioContext.createOscillator();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, now + index * 0.055);
+        osc.connect(gain);
+        osc.start(now + index * 0.055);
+        osc.stop(now + 0.32 + index * 0.04);
+      });
     }
 
-    function markChoice(question, card, button) {
-      const buttons = card.querySelectorAll(".choiceBtn");
+    function playWinSound() {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      audioContext = audioContext || new AudioCtx();
+      const now = audioContext.currentTime;
+      const gain = audioContext.createGain();
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+      gain.connect(audioContext.destination);
+
+      [523, 659, 784, 1047].forEach((freq, index) => {
+        const osc = audioContext.createOscillator();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq, now + index * 0.13);
+        osc.connect(gain);
+        osc.start(now + index * 0.13);
+        osc.stop(now + 0.26 + index * 0.13);
+      });
+    }
+
+    function makeSparks(x, y) {
+      for (let i = 0; i < 9; i += 1) {
+        const spark = document.createElement("span");
+        spark.className = "spark";
+        spark.style.left = `${x}px`;
+        spark.style.top = `${y}px`;
+        spark.style.setProperty("--spark-x", `${Math.cos(i) * (26 + i * 4)}px`);
+        spark.style.setProperty("--spark-y", `${Math.sin(i) * (26 + i * 4)}px`);
+        document.body.appendChild(spark);
+        spark.addEventListener("animationend", () => spark.remove());
+      }
+    }
+
+    function flyGem(fromEl) {
+      const start = fromEl.getBoundingClientRect();
+      const end = treasureTarget.getBoundingClientRect();
+      const gem = document.createElement("span");
+      gem.className = "gemFly";
+      gem.textContent = "💎";
+      const startX = start.left + start.width / 2;
+      const startY = start.top + start.height / 2;
+      const endX = end.left + end.width / 2;
+      const endY = end.top + end.height / 2;
+      gem.style.left = `${startX}px`;
+      gem.style.top = `${startY}px`;
+      gem.style.setProperty("--gem-x", `${endX - startX}px`);
+      gem.style.setProperty("--gem-y", `${endY - startY}px`);
+      document.body.appendChild(gem);
+      makeSparks(startX, startY);
+      gem.addEventListener("animationend", () => {
+        makeSparks(endX, endY);
+        gem.remove();
+      });
+    }
+
+    function updateProgress() {
+      gemCountEl.textContent = answered.size;
+      totalCountEl.textContent = totalQuestions;
+      const isDone = answered.size === totalQuestions;
+      chestEl.classList.toggle("open", isDone);
+      completeBox.classList.toggle("show", isDone);
+    }
+
+    function chooseAnswer(question, card, button) {
+      const choices = card.querySelectorAll(".choice");
       const feedback = card.querySelector(".feedback");
-      buttons.forEach((choice) => choice.classList.remove("correct", "wrong"));
+      choices.forEach((choice) => choice.classList.remove("correct", "wrong"));
 
       if (button.dataset.choice === question.answer) {
         button.classList.add("correct");
-        feedback.textContent = "Great reading!";
+        feedback.textContent = "Gem collected!";
         feedback.className = "feedback good";
+        speak(`${question.answer}. ${question.complete}`);
         answered.add(question.id);
-        buttons.forEach((choice) => {
+        choices.forEach((choice) => {
           choice.disabled = true;
-          if (choice !== button) {
-            choice.style.opacity = "0.62";
-          }
+          if (choice !== button) choice.style.opacity = "0.6";
         });
+        flyGem(button);
+        setTimeout(playGemSound, 650);
+        const wasLast = answered.size === totalQuestions;
+        updateProgress();
+        if (wasLast) playWinSound();
       } else {
         button.classList.add("wrong");
-        feedback.textContent = question.hint;
+        feedback.textContent = "Look at the picture and try again.";
         feedback.className = "feedback try";
       }
-
-      updateProgress();
     }
 
-    function createQuestionCard(question) {
+    function chooseMatch(side, item, button, board) {
+      if (button.classList.contains("correct")) return;
+
+      if (side === "left") {
+        board.querySelectorAll(".matchCard[data-side='left']").forEach((card) => card.classList.remove("selected"));
+        selectedMatch = { item, button };
+        button.classList.add("selected");
+        return;
+      }
+
+      if (!selectedMatch) {
+        button.classList.add("wrong");
+        setTimeout(() => button.classList.remove("wrong"), 360);
+        return;
+      }
+
+      if (selectedMatch.item.word === item.word) {
+        button.classList.add("correct");
+        selectedMatch.button.classList.remove("selected");
+        selectedMatch.button.classList.add("correct");
+        answered.add(item.id);
+        speak(item.audio);
+        flyGem(button);
+        setTimeout(playGemSound, 650);
+        const wasLast = answered.size === totalQuestions;
+        updateProgress();
+        if (wasLast) playWinSound();
+      } else {
+        const wrongLeft = selectedMatch.button;
+        button.classList.add("wrong");
+        wrongLeft.classList.add("wrong");
+        setTimeout(() => {
+          button.classList.remove("wrong");
+          wrongLeft.classList.remove("wrong", "selected");
+          if (selectedMatch?.button === wrongLeft) selectedMatch = null;
+        }, 480);
+        return;
+      }
+
+      selectedMatch = null;
+    }
+
+    function renderPicture(type) {
+      if (type === "toys") {
+        return "";
+      }
+
+      const icons = type === "bridge"
+        ? ["⚽", "📖", "🍦", "🏫", "🌉", "💎"]
+        : type === "cave"
+          ? ["👩‍🏫", "🐱", "🐶", "🏈", "😊", "🪙"]
+          : type === "words"
+            ? ["am", "is", "are", "my", "your", "do", "does", "💎"]
+          : ["👧", "👨‍⚕️", "🐶", "🐱", "👫", "💎"];
+
+      return `
+        <div class="picturePanel">
+          <div class="islandArt" aria-hidden="true">
+            <div class="sun"></div>
+            <div class="palm">🌴</div>
+            <div class="boat">${type === "cave" ? "⛰️" : type === "bridge" ? "🌉" : "⛵"}</div>
+            <div class="clueGrid">
+              ${icons.map((icon) => `<div class="clue">${icon}</div>`).join("")}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMatching(level) {
+      const board = document.createElement("div");
+      board.className = "matchBoard";
+      const leftItems = [...level.matchItems];
+      const rightItems = [level.matchItems[2], level.matchItems[5], level.matchItems[0], level.matchItems[6], level.matchItems[1], level.matchItems[4], level.matchItems[3]];
+
+      board.innerHTML = `
+        <div class="matchColumn">
+          <p class="matchLabel">Treasure Words</p>
+        </div>
+        <div class="matchColumn">
+          <p class="matchLabel">Find the Match</p>
+        </div>
+      `;
+
+      const leftColumn = board.children[0];
+      const rightColumn = board.children[1];
+
+      leftItems.forEach((item) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "matchCard";
+        button.dataset.side = "left";
+        button.textContent = item.word;
+        button.addEventListener("click", () => chooseMatch("left", item, button, board));
+        leftColumn.appendChild(button);
+      });
+
+      rightItems.forEach((item) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "matchCard";
+        button.dataset.side = "right";
+        button.textContent = item.word;
+        button.addEventListener("click", () => chooseMatch("right", item, button, board));
+        rightColumn.appendChild(button);
+      });
+
+      return board;
+    }
+
+    function renderQuestion(question) {
       const card = document.createElement("article");
-      card.className = "questionCard";
+      card.className = "card";
       card.innerHTML = `
-        <div class="questionTop">
-          <p class="questionText">${question.text}</p>
-          <button class="listenBtn" type="button" aria-label="Listen to question">▶</button>
+        ${question.image ? `<img class="questionShot" src="${question.image}" alt="">` : ""}
+        <div class="cardTop">
+          <div class="miniPic" aria-hidden="true">${question.icon}</div>
+          <p class="question">${question.text}</p>
         </div>
         <div class="choices"></div>
         <p class="feedback" aria-live="polite"></p>
       `;
 
-      card.querySelector(".listenBtn").addEventListener("click", () => speak(question.audio));
       const choicesEl = card.querySelector(".choices");
-
       question.choices.forEach((choice) => {
         const button = document.createElement("button");
-        button.className = "choiceBtn";
         button.type = "button";
+        button.className = "choice";
         button.textContent = choice;
         button.dataset.choice = choice;
-        button.addEventListener("click", () => markChoice(question, card, button));
+        button.addEventListener("click", () => chooseAnswer(question, card, button));
         choicesEl.appendChild(button);
       });
-
       return card;
     }
 
     function renderLevels() {
       levelsEl.innerHTML = "";
-      challengeData.forEach((level, index) => {
+      levels.forEach((level) => {
         const section = document.createElement("section");
         section.className = "level";
         section.innerHTML = `
-          <div class="levelHeader">
-            <h2 class="levelTitle">Level ${index + 1}: ${level.title}</h2>
-            <div class="pageListen">
-              <button class="toolBtn" type="button">Listen to Page</button>
+          <div class="levelHead">
+            <div>
+              <h2 class="levelTitle">${level.title}</h2>
+              <p class="levelRule">${level.rule}</p>
             </div>
           </div>
-          <div class="pictureWrap">
-            <img class="bookImage" src="${level.image}" alt="${level.title}">
-            <div class="imageFallback">${level.missing}</div>
+          <div class="scene ${level.imageType === "toys" ? "questionsOnly" : ""}">
+            ${renderPicture(level.imageType)}
+            <div class="questions"></div>
           </div>
-          <div class="questions"></div>
         `;
 
-        section.querySelector(".toolBtn").addEventListener("click", () => speak(level.pageAudio));
-        const pictureWrap = section.querySelector(".pictureWrap");
-        const image = section.querySelector(".bookImage");
-        image.addEventListener("error", () => {
-          image.remove();
-          pictureWrap.classList.add("missing");
-        });
-
         const questionsEl = section.querySelector(".questions");
-        level.questions.forEach((question) => {
-          questionsEl.appendChild(createQuestionCard(question));
-        });
-
+        if (level.matchItems) {
+          questionsEl.appendChild(renderMatching(level));
+        } else {
+          level.questions.forEach((question) => questionsEl.appendChild(renderQuestion(question)));
+        }
         levelsEl.appendChild(section);
       });
     }
 
-    document.querySelector("#readTitle").addEventListener("click", () => {
-      speak("Gerry and Cindy in the City.");
-    });
-
-    document.querySelector("#readFocus").addEventListener("click", () => {
-      speak("Listen for soft c and soft g words. City. Cindy. Nice. Lace. Giant. Gerry.");
-    });
-
     document.querySelector("#resetBtn").addEventListener("click", () => {
       answered.clear();
+      selectedMatch = null;
       renderLevels();
       updateProgress();
       window.scrollTo({ top: 0, behavior: "smooth" });

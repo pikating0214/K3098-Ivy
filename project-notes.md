@@ -2,9 +2,10 @@
 
 ## Project
 
-- Project name: K3098 preview challenge
-- Book: Gerry and Cindy in the City
-- Teaching focus: reading comprehension with soft c and soft g exposure
+- Project name: Treasure Hunt Grammar Quest
+- Target students: 6-year-old English learners
+- Teaching focus: sight recognition for `am`, `is`, `are`, `my`, `your`, `do`, `does`; sentence practice for `am / is / are` and `do / does`
+- Game style: treasure hunt challenge
 - Format: static HTML/CSS/JavaScript only
 
 ## Files
@@ -14,24 +15,28 @@ K3098/
 ├── index.html
 ├── project-notes.md
 └── assets/
-    ├── README.md
-    ├── cover.JPG
-    ├── page-1-van-page.JPG
-    ├── page-2-bridge-dress.JPG
-    ├── page-3-juice-rice.JPG
-    └── page-4-race-stage.JPG
+    └── README.md
 ```
+
+## Game Structure
+
+- Level 1: Find the Word - match `am`, `is`, `are`, `my`, `your`, `do`, `does`
+- Level 2: Magic Map - choose `am`, `is`, or `are`
+- Level 3: River Bridge - choose `Do` or `Does`
+- Level 4: Treasure Cave - mixed review
 
 ## Teacher Notes
 
-- The activity keeps questions 1-10 only.
-- Each picture is paired with the matching questions from that picture.
-- Audio uses the browser's built-in English speech, so no audio files or paid services are needed.
-- Students do not see the correct answer after a wrong try. They receive a short hint and can try again.
-- Page 5 place questions were removed at the teacher's request.
+- The game has 22 small tasks.
+- Students hear audio only after a correct answer.
+- Sentence questions play the answer word first, then the full sentence.
+- Correct answers collect gems with animation and a short sound effect.
+- When all gems are collected, the treasure chest opens and a victory sound plays.
+- Wrong answers give a short hint without showing the correct answer.
+- No APIs, external services, build tools, or generated audio files are used.
 
 ## GitHub Upload Notes
 
 - Target GitHub repository: K3098
-- Recommended workflow: upload the local `index.html`, `project-notes.md`, and `assets` folder to GitHub manually.
+- Recommended workflow: upload the local `index.html`, `project-notes.md`, and `assets` folder manually through the GitHub website or GitHub Desktop.
 - Do not push from Codex unless the teacher explicitly asks for Git/GitHub operation.
