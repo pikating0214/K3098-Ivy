@@ -3,1100 +3,1239 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Treasure Hunt Grammar Quest</title>
+  <title>Measure & Sound Adventure</title>
   <style>
     :root {
       color-scheme: light;
-      --ink: #25313d;
-      --muted: #5b6b78;
-      --sand: #fff4cf;
-      --paper: #fffdf5;
-      --panel: #ffffff;
-      --sea: #1d7b9b;
-      --leaf: #2f8a58;
-      --gold: #f4b63e;
-      --coral: #d9584b;
-      --ruby: #c73559;
-      --line: #d9cda4;
-      --good: #287d55;
-      --bad: #a8443d;
-      --shadow: 0 16px 38px rgba(48, 42, 22, 0.16);
+      --ink: #20304a;
+      --muted: #5f6f85;
+      --blue: #3878e8;
+      --cyan: #42c7de;
+      --green: #46ad72;
+      --yellow: #ffd45a;
+      --orange: #ff914d;
+      --purple: #8c65d8;
+      --pink: #ef6c9d;
+      --paper: #fffdf6;
+      --line: #d9e3ef;
+      --good: #238455;
+      --bad: #bd4b4b;
+      --shadow: 0 16px 34px rgba(31, 57, 91, 0.14);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
       color: var(--ink);
+      font-family: "Trebuchet MS", Arial, sans-serif;
       background:
-        radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.8) 0 7%, transparent 8%),
-        linear-gradient(180deg, #87d7e5 0, #bfeadc 260px, var(--sand) 261px, #fffbec 100%);
-      overflow-x: hidden;
+        radial-gradient(circle at 12% 10%, rgba(255,255,255,.9) 0 5%, transparent 5.5%),
+        radial-gradient(circle at 88% 18%, rgba(255,255,255,.75) 0 4%, transparent 4.5%),
+        linear-gradient(180deg, #c8f0ff 0 250px, #f3f9e9 251px 100%);
     }
 
-    button {
-      font: inherit;
-    }
+    button { font: inherit; }
 
     .shell {
-      width: min(1120px, calc(100% - 24px));
+      width: min(1100px, calc(100% - 22px));
       margin: 0 auto;
-      padding: 20px 0 44px;
+      padding: 18px 0 50px;
     }
 
     .hero {
       position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 18px;
-      align-items: center;
-      padding: 22px;
-      border: 2px solid rgba(132, 91, 38, 0.24);
-      border-radius: 8px;
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255, 249, 219, 0.92)),
-        repeating-linear-gradient(45deg, transparent 0 28px, rgba(244, 182, 62, 0.11) 29px 31px);
-      box-shadow: var(--shadow);
       overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 230px;
+      gap: 20px;
+      align-items: center;
+      padding: clamp(20px, 4vw, 38px);
+      border: 3px solid rgba(56,120,232,.18);
+      border-radius: 28px;
+      background: rgba(255,255,255,.93);
+      box-shadow: var(--shadow);
     }
 
+    .hero::before,
     .hero::after {
       content: "";
       position: absolute;
-      right: -42px;
-      bottom: -54px;
-      width: 230px;
-      height: 170px;
-      border-radius: 50%;
-      background: rgba(29, 123, 155, 0.13);
-      transform: rotate(-12deg);
+      border-radius: 999px;
+      background: rgba(66,199,222,.16);
+    }
+
+    .hero::before { width: 180px; height: 180px; right: -50px; top: -70px; }
+    .hero::after { width: 120px; height: 120px; left: 46%; bottom: -80px; }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      color: #295aaa;
+      background: #eaf2ff;
+      font-size: .88rem;
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-transform: uppercase;
     }
 
     h1 {
       position: relative;
       z-index: 1;
       margin: 0;
-      font-size: clamp(2rem, 5vw, 4rem);
-      line-height: 1.02;
-      letter-spacing: 0;
+      font-size: clamp(2.2rem, 6vw, 4.7rem);
+      line-height: .98;
     }
 
-    .intro {
+    .hero p {
       position: relative;
       z-index: 1;
-      max-width: 720px;
-      margin: 10px 0 0;
+      max-width: 700px;
+      margin: 14px 0 0;
       color: var(--muted);
       font-size: clamp(1rem, 2.3vw, 1.2rem);
-      line-height: 1.45;
+      line-height: 1.5;
     }
 
-    .treasureBox {
+    .heroArt {
       position: relative;
       z-index: 1;
       display: grid;
       place-items: center;
-      width: min(230px, 34vw);
-      min-width: 150px;
-      aspect-ratio: 1.18;
-      padding: 12px;
-      border-radius: 8px;
-      background: #f9e8ad;
-      border: 2px solid rgba(132, 91, 38, 0.28);
+      min-height: 190px;
     }
 
-    .chest {
-      position: relative;
-      width: 130px;
-      height: 94px;
-      filter: drop-shadow(0 10px 10px rgba(79, 49, 10, 0.18));
-    }
-
-    .chestLid {
+    .heroArt .ruler {
       position: absolute;
-      left: 8px;
-      top: 4px;
-      width: 114px;
-      height: 44px;
-      border-radius: 48px 48px 8px 8px;
-      background: linear-gradient(#9b5a25, #6c3818);
-      border: 4px solid #3f2413;
-      transform-origin: bottom left;
-      transition: transform 0.55s ease;
+      width: 190px;
+      height: 48px;
+      border: 4px solid #cb7e23;
+      border-radius: 12px;
+      background: repeating-linear-gradient(90deg, #ffd45a 0 18px, #ffd45a 18px 20px, #fff0a7 20px 22px);
+      transform: rotate(-13deg);
+      box-shadow: 0 12px 18px rgba(89,64,16,.16);
     }
 
-    .chest.open .chestLid {
-      transform: rotate(-18deg) translateY(-18px);
-    }
-
-    .chestBody {
+    .heroArt .pencil {
       position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 130px;
-      height: 64px;
-      border-radius: 8px;
-      background: linear-gradient(90deg, #7a3e1a, #b96b28 48%, #7a3e1a);
-      border: 4px solid #3f2413;
-      overflow: hidden;
+      width: 180px;
+      height: 32px;
+      border-radius: 5px 16px 16px 5px;
+      background: linear-gradient(180deg, #8c65d8 0 48%, #6c46bd 49% 100%);
+      transform: rotate(23deg) translateY(-32px);
+      box-shadow: 0 9px 16px rgba(68,44,114,.2);
     }
 
-    .chestBody::before,
-    .chestBody::after {
+    .heroArt .pencil::before {
       content: "";
       position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 14px;
-      background: #f0bc46;
+      left: -27px;
+      border-top: 16px solid transparent;
+      border-bottom: 16px solid transparent;
+      border-right: 28px solid #f4c58f;
     }
 
-    .chestBody::before {
-      left: 24px;
-    }
-
-    .chestBody::after {
-      right: 24px;
-    }
-
-    .lock {
+    .heroArt .pencil::after {
+      content: "";
       position: absolute;
-      left: 50%;
-      bottom: 24px;
-      width: 28px;
-      height: 30px;
-      border-radius: 6px;
-      background: #f6c64d;
-      border: 3px solid #593716;
-      transform: translateX(-50%);
-      z-index: 2;
+      left: -31px;
+      top: 10px;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-right: 11px solid #27344c;
     }
 
-    .gemCount {
-      margin: 8px 0 0;
-      font-weight: 800;
-      color: #5f3b15;
-      text-align: center;
+    .progressWrap {
+      position: sticky;
+      top: 8px;
+      z-index: 20;
+      margin: 16px 0;
+      padding: 11px 14px;
+      border: 2px solid rgba(56,120,232,.16);
+      border-radius: 18px;
+      background: rgba(255,255,255,.94);
+      box-shadow: 0 8px 20px rgba(31,57,91,.1);
+      backdrop-filter: blur(8px);
     }
 
-    .mapPath {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+    .progressTop {
+      display: flex;
+      justify-content: space-between;
       gap: 10px;
-      margin: 18px 0;
+      margin-bottom: 7px;
+      font-weight: 900;
+    }
+
+    .bar {
+      height: 12px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e8eef7;
+    }
+
+    .barFill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), var(--blue), var(--purple));
+      transition: width .35s ease;
+    }
+
+    .map {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 16px 0;
     }
 
     .mapStep {
-      min-height: 70px;
-      padding: 10px;
-      border: 2px solid rgba(47, 138, 88, 0.28);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.82);
+      padding: 12px 8px;
+      border: 2px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.8);
       color: var(--muted);
-      font-weight: 800;
       text-align: center;
+      font-weight: 900;
     }
 
-    .mapIcon {
-      display: block;
-      font-size: 1.6rem;
-      margin-bottom: 4px;
+    .mapStep.done {
+      border-color: #97d8b2;
+      color: #23754b;
+      background: #edf9f2;
     }
 
     .level {
       margin-top: 18px;
-      border: 2px solid rgba(132, 91, 38, 0.22);
-      border-radius: 8px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
       overflow: hidden;
+      border: 3px solid rgba(56,120,232,.14);
+      border-radius: 26px;
+      background: white;
+      box-shadow: var(--shadow);
     }
 
     .levelHead {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 12px;
-      align-items: center;
-      padding: 16px;
-      background:
-        linear-gradient(90deg, rgba(47, 138, 88, 0.13), rgba(244, 182, 62, 0.16)),
-        #fffaf0;
-      border-bottom: 2px dashed rgba(132, 91, 38, 0.22);
-    }
-
-    .levelTitle {
-      margin: 0;
-      font-size: clamp(1.25rem, 3vw, 1.8rem);
-      line-height: 1.12;
-    }
-
-    .levelRule {
-      margin: 6px 0 0;
-      color: var(--muted);
-      line-height: 1.35;
-    }
-
-    .choice,
-    .reset {
-      border: 0;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
-    }
-
-    .reset {
-      min-height: 44px;
-      padding: 10px 14px;
-      color: white;
-      background: var(--sea);
-      box-shadow: 0 8px 18px rgba(29, 123, 155, 0.18);
-      font-weight: 800;
-    }
-
-    .choice:active,
-    .reset:active {
-      transform: translateY(1px);
-    }
-
-    .scene {
-      display: grid;
-      grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1fr);
+      display: flex;
+      justify-content: space-between;
       gap: 16px;
-      padding: 16px;
-      background: #fffdf6;
-    }
-
-    .scene.questionsOnly {
-      grid-template-columns: 1fr;
-    }
-
-    .picturePanel {
-      min-height: 320px;
-      border: 2px solid rgba(29, 123, 155, 0.18);
-      border-radius: 8px;
-      background:
-        radial-gradient(circle at 24% 18%, rgba(255,255,255,0.8) 0 8%, transparent 9%),
-        linear-gradient(180deg, #bce9f0 0 48%, #f7de99 49% 100%);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .islandArt {
-      position: absolute;
-      inset: 0;
-    }
-
-    .sun {
-      position: absolute;
-      top: 24px;
-      right: 26px;
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      background: #ffd35d;
-      box-shadow: 0 0 0 12px rgba(255, 211, 93, 0.18);
-    }
-
-    .palm {
-      position: absolute;
-      left: 24px;
-      bottom: 62px;
-      font-size: 5rem;
-      transform: rotate(-8deg);
-    }
-
-    .boat {
-      position: absolute;
-      right: 18px;
-      bottom: 76px;
-      font-size: 4.5rem;
-    }
-
-    .clueGrid {
-      position: absolute;
-      left: 18px;
-      right: 18px;
-      bottom: 16px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-
-    .clue {
-      min-height: 58px;
-      display: grid;
-      place-items: center;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.82);
-      border: 2px solid rgba(132, 91, 38, 0.14);
-      font-size: 2rem;
-    }
-
-    .questions {
-      display: grid;
-      gap: 12px;
-    }
-
-    .card {
-      border: 2px solid rgba(217, 205, 164, 0.9);
-      border-radius: 8px;
-      background: #ffffff;
-      padding: 12px;
-    }
-
-    .cardTop {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
-      gap: 10px;
       align-items: center;
+      padding: 18px clamp(16px, 4vw, 28px);
+      background: linear-gradient(135deg, #eff8ff, #fff9dc);
+      border-bottom: 2px dashed #cfdceb;
     }
 
-    .miniPic {
-      width: 58px;
-      height: 58px;
-      display: grid;
-      place-items: center;
-      border-radius: 8px;
-      background: #fff1bd;
-      border: 2px solid rgba(244, 182, 62, 0.45);
-      font-size: 2rem;
+    .levelHead h2 {
+      margin: 0;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+    }
+
+    .levelHead p {
+      margin: 5px 0 0;
+      color: var(--muted);
+    }
+
+    .levelBadge {
       flex: 0 0 auto;
+      min-width: 70px;
+      padding: 11px;
+      border-radius: 18px;
+      color: white;
+      background: var(--blue);
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .questionGrid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: clamp(14px, 3vw, 24px);
     }
 
     .question {
-      margin: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 250px;
+      padding: 16px;
+      border: 2px solid var(--line);
+      border-radius: 20px;
+      background: var(--paper);
+    }
+
+    .question.wide { grid-column: 1 / -1; }
+
+    .qNumber {
+      color: #47617e;
+      font-size: .85rem;
       font-weight: 900;
-      font-size: clamp(1rem, 2.8vw, 1.28rem);
-      line-height: 1.22;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .question h3 {
+      margin: 7px 0 12px;
+      font-size: clamp(1.05rem, 2.5vw, 1.32rem);
+      line-height: 1.25;
+    }
+
+    .visual {
+      min-height: 92px;
+      display: flex;
+      justify-content: center;
+      align-items: end;
+      gap: clamp(12px, 4vw, 34px);
+      margin: 4px 0 15px;
+      padding: 10px;
+      border-radius: 16px;
+      background: #edf8ff;
+      overflow-x: auto;
+    }
+
+    .object {
+      position: relative;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .visualItem {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      color: #27344c;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .objectLabel {
+      display: block;
+      min-width: 34px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(31,57,91,.12);
+      line-height: 1.2;
+    }
+
+    .pencilObj {
+      height: 22px;
+      border: 3px solid #4e4d69;
+      border-radius: 4px 12px 12px 4px;
+    }
+
+    .pencilObj::before {
+      content: "";
+      position: absolute;
+      left: -18px;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 18px solid #edbc7e;
+    }
+
+    .bus {
+      display: flex;
+      align-items: end;
+      height: 46px;
+      padding: 7px 9px 10px;
+      border: 3px solid #825912;
+      border-radius: 9px 13px 8px 8px;
+      background: #ffc934;
+      color: #563c0c;
+    }
+
+    .plant {
+      width: 48px;
+      border-bottom: 22px solid #c95d3c;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+    }
+
+    .plant::before {
+      content: "";
+      position: absolute;
+      left: 21px;
+      bottom: 18px;
+      width: 7px;
+      height: var(--stem);
+      border-radius: 6px;
+      background: #56a85e;
+    }
+
+    .plant::after {
+      content: "🍃";
+      position: absolute;
+      left: 10px;
+      bottom: calc(12px + var(--stem));
+      font-size: 28px;
+    }
+
+    .rope {
+      height: 14px;
+      border: 4px dashed #996633;
+      border-radius: 999px;
+      background: #d7a967;
+    }
+
+    .tower {
+      width: 44px;
+      border: 3px solid #c76c2e;
+      border-radius: 7px 7px 3px 3px;
+      background: repeating-linear-gradient(0deg, #ff9c4c 0 17px, #ffd0a5 18px 20px);
     }
 
     .choices {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+      gap: 9px;
+      margin-top: auto;
+    }
+
+    .choice,
+    .listen,
+    .submit,
+    .restart {
+      min-height: 46px;
+      border: 0;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 900;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
     }
 
     .choice {
-      min-height: 48px;
-      padding: 10px;
-      color: var(--ink);
-      background: #f7fbfd;
-      border: 2px solid #d8e7eb;
-      font-weight: 900;
-      text-align: center;
+      padding: 9px 10px;
+      color: #26415e;
+      background: #edf3fb;
+      box-shadow: inset 0 0 0 2px #d5e1ef;
     }
 
-    .choice:hover {
-      background: #eef9fb;
-    }
+    .choice:hover,
+    .listen:hover,
+    .submit:hover,
+    .restart:hover { transform: translateY(-2px); }
 
-    .questionShot {
-      display: block;
-      width: 100%;
-      max-height: 190px;
-      object-fit: contain;
-      margin-bottom: 10px;
-      border: 2px solid rgba(29, 123, 155, 0.16);
-      border-radius: 8px;
-      background: #ffffff;
-    }
-
-    .matchBoard {
-      display: grid;
-      gap: 14px;
-    }
-
-    .matchHelp {
-      display: grid;
-      gap: 10px;
-      padding: 12px;
-      border: 2px solid rgba(29, 123, 155, 0.16);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.72);
-    }
-
-    .matchHelpTitle {
-      margin: 0;
-      color: var(--ink);
-      font-size: clamp(1.05rem, 3vw, 1.35rem);
-      font-weight: 900;
-      text-align: center;
-    }
-
-    .matchSteps {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    .matchStep {
-      display: grid;
-      place-items: center;
-      min-height: 48px;
-      padding: 8px;
-      border-radius: 8px;
-      color: #155063;
-      background: #e9f7fb;
-      font-size: 0.92rem;
-      font-weight: 900;
-      text-align: center;
-    }
-
-    .matchGrid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .matchCard {
-      position: relative;
-      min-height: 76px;
-      border: 0;
-      border-radius: 8px;
-      background: transparent;
-      color: var(--ink);
-      cursor: pointer;
-      perspective: 700px;
-    }
-
-    .matchCardInner {
-      position: absolute;
-      inset: 0;
-      transition: transform 0.28s ease;
-      transform-style: preserve-3d;
-    }
-
-    .matchCard.is-flipped .matchCardInner,
-    .matchCard.correct .matchCardInner {
-      transform: rotateY(180deg);
-    }
-
-    .matchFace {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      padding: 8px;
-      border: 2px solid #d8e7eb;
-      border-radius: 8px;
-      backface-visibility: hidden;
-      font-size: clamp(1.05rem, 3vw, 1.35rem);
-      font-weight: 900;
-      text-align: center;
-    }
-
-    .matchBack {
-      color: #ffffff;
-      background: linear-gradient(145deg, #1d7b9b, #29886f);
-      border-color: rgba(255, 255, 255, 0.35);
-      box-shadow: inset 0 -8px 0 rgba(0, 0, 0, 0.08);
-    }
-
-    .matchFront {
-      background: #f7fbfd;
-      transform: rotateY(180deg);
-    }
-
-    .matchCard.selected .matchFront {
-      border-color: var(--gold);
-      background: #fff1bd;
-      box-shadow: 0 0 0 4px rgba(244, 182, 62, 0.18);
-    }
-
-    .matchCard.correct .matchFront {
-      color: #ffffff;
-      background: var(--good);
-      border-color: var(--good);
-    }
-
-    .matchCard.wrong {
-      animation: shake 0.28s ease;
-    }
-
-    .matchCard.wrong .matchFront {
-      color: #ffffff;
-      background: var(--bad);
-      border-color: var(--bad);
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
+    .choice.selected {
+      color: white;
+      background: var(--blue);
+      box-shadow: 0 7px 15px rgba(56,120,232,.26);
     }
 
     .choice.correct {
       color: white;
       background: var(--good);
-      border-color: var(--good);
+      box-shadow: none;
     }
 
     .choice.wrong {
       color: white;
       background: var(--bad);
-      border-color: var(--bad);
+      box-shadow: none;
     }
 
     .feedback {
-      min-height: 20px;
-      margin: 8px 0 0;
+      min-height: 23px;
+      margin: 10px 0 0;
       color: var(--muted);
+      font-size: .92rem;
       font-weight: 800;
-      line-height: 1.28;
     }
 
-    .feedback.good {
-      color: var(--good);
+    .feedback.good { color: var(--good); }
+    .feedback.try { color: var(--bad); }
+
+    .orderTray {
+      min-height: 52px;
+      margin: 2px 0 10px;
+      padding: 10px;
+      border: 2px dashed #aac2df;
+      border-radius: 14px;
+      background: white;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 900;
     }
 
-    .feedback.try {
-      color: var(--bad);
+    .blockLine {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+      justify-content: center;
+      min-height: 74px;
+      padding: 12px;
+      border-radius: 16px;
+      background: #eef9f2;
     }
 
-    .gemFly {
-      position: fixed;
-      z-index: 20;
-      width: 30px;
-      height: 30px;
+    .block {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #d56c22;
+      border-radius: 5px;
+      background: #ff9a48;
+      box-shadow: inset -3px -3px rgba(174,73,21,.15);
+    }
+
+    .measureObject {
+      align-self: center;
+      margin-right: 8px;
+      color: #694c25;
+      font-size: 2.2rem;
+    }
+
+    .sortArea {
       display: grid;
-      place-items: center;
-      pointer-events: none;
-      animation: flyGem 760ms cubic-bezier(.18,.82,.22,1) forwards;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+      margin: 8px 0 14px;
     }
 
-    .spark {
-      position: fixed;
-      z-index: 19;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #fff2a5;
-      pointer-events: none;
-      animation: sparkle 520ms ease-out forwards;
+    .sortBin {
+      min-height: 120px;
+      padding: 12px;
+      border: 3px dashed #c8d7e8;
+      border-radius: 18px;
+      background: #f7fbff;
+      text-align: center;
+      cursor: pointer;
     }
 
-    .complete {
+    .sortBin h4 { margin: 0 0 8px; }
+
+    .sortBin[data-bin="soft-c"] { background: #eef8ff; border-color: #8cc8ee; }
+    .sortBin[data-bin="hard-c"] { background: #fff6dd; border-color: #edc86b; }
+    .sortBin[data-bin="soft-g"] { background: #f5efff; border-color: #b9a0e8; }
+    .sortBin[data-bin="hard-g"] { background: #eef9f2; border-color: #91d0aa; }
+
+    .wordTokens {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(80px,1fr));
+      gap: 9px;
+    }
+
+    .wordToken {
+      min-height: 48px;
+      border: 2px solid #ded4f1;
+      border-radius: 13px;
+      background: #f5f0ff;
+      color: #503986;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .wordToken.active {
+      color: white;
+      border-color: var(--purple);
+      background: var(--purple);
+    }
+
+    .wordToken.placed {
+      opacity: .45;
+      pointer-events: none;
+    }
+
+    .placedWord {
+      display: inline-block;
+      margin: 3px;
+      padding: 6px 9px;
+      border-radius: 10px;
+      background: #e5f1ff;
+      font-weight: 900;
+    }
+
+    .vowelIntro {
+      grid-column: 1 / -1;
+      margin: 0;
+      padding: 16px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f4efff, #eefaff);
+      color: #4c4661;
+      line-height: 1.45;
+    }
+
+    .listen {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      color: white;
+      background: linear-gradient(135deg, var(--purple), #6e7fe8);
+      box-shadow: 0 8px 16px rgba(111,89,184,.22);
+    }
+
+    .cvc {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 64px;
+      margin: 2px 0 13px;
+      border-radius: 15px;
+      background: #fff4ca;
+      font-size: clamp(2rem, 7vw, 3.3rem);
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+
+    .submitPanel {
+      margin-top: 20px;
+      padding: clamp(18px, 4vw, 30px);
+      border: 3px solid rgba(70,173,114,.2);
+      border-radius: 26px;
+      background: rgba(255,255,255,.95);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .submitPanel h2 { margin: 0 0 7px; }
+    .submitPanel p { margin: 0 0 15px; color: var(--muted); }
+
+    .submit {
+      width: min(480px, 100%);
+      padding: 14px 20px;
+      color: white;
+      background: linear-gradient(135deg, var(--green), #2b8f76);
+      box-shadow: 0 10px 20px rgba(44,143,116,.25);
+      font-size: 1.1rem;
+    }
+
+    .submit:disabled {
+      cursor: not-allowed;
+      opacity: .55;
+      transform: none;
+    }
+
+    .result {
       display: none;
       margin-top: 18px;
-      padding: 22px;
-      text-align: center;
-      border: 2px solid rgba(132, 91, 38, 0.22);
-      border-radius: 8px;
-      background: #fffef7;
+      padding: clamp(20px, 5vw, 38px);
+      border: 3px solid #f2cf65;
+      border-radius: 28px;
+      background: linear-gradient(145deg, #fff9d9, #fff);
       box-shadow: var(--shadow);
+      text-align: center;
     }
 
-    .complete.show {
-      display: block;
+    .result.show { display: block; animation: pop .45s ease both; }
+
+    @keyframes pop {
+      from { opacity: 0; transform: scale(.92); }
+      to { opacity: 1; transform: scale(1); }
     }
 
-    .complete h2 {
-      margin: 0 0 8px;
-      font-size: clamp(1.5rem, 4vw, 2.3rem);
+    .rewardArt {
+      position: relative;
+      width: 160px;
+      height: 150px;
+      margin: 0 auto 8px;
     }
 
-    .coins {
-      font-size: 2.2rem;
-      animation: bounceCoins 1s ease-in-out infinite;
+    .sunFace {
+      position: absolute;
+      inset: 18px;
+      display: grid;
+      place-items: center;
+      border: 7px solid #e6a91d;
+      border-radius: 50%;
+      background: var(--yellow);
+      color: #77470a;
+      font-size: 3.3rem;
+      box-shadow: 0 10px 20px rgba(208,151,17,.2);
     }
 
-    @keyframes flyGem {
-      0% {
-        transform: translate(0, 0) scale(0.72) rotate(0deg);
-        opacity: 0;
-      }
-      15% {
-        opacity: 1;
-      }
-      100% {
-        transform: translate(var(--gem-x), var(--gem-y)) scale(1.18) rotate(360deg);
-        opacity: 0;
-      }
+    .ray {
+      position: absolute;
+      left: 76px;
+      top: 0;
+      width: 8px;
+      height: 24px;
+      border-radius: 999px;
+      background: #f0b323;
+      transform-origin: 4px 75px;
     }
 
-    @keyframes sparkle {
-      0% {
-        transform: translate(0, 0) scale(0.8);
-        opacity: 1;
-      }
-      100% {
-        transform: translate(var(--spark-x), var(--spark-y)) scale(0);
-        opacity: 0;
-      }
+    .stars {
+      margin: 7px 0;
+      color: #f2b924;
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      letter-spacing: .08em;
     }
 
-    @keyframes bounceCoins {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+    .scoreText {
+      margin: 8px 0;
+      font-size: clamp(2rem, 7vw, 4rem);
+      font-weight: 900;
     }
 
-    @media (max-width: 860px) {
-      .hero,
-      .scene,
-      .levelHead {
-        grid-template-columns: 1fr;
-      }
-
-      .treasureBox {
-        width: 100%;
-      }
-
-      .mapPath {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .picturePanel {
-        min-height: 260px;
-      }
+    .encourage {
+      margin: 8px auto 18px;
+      color: #4e6076;
+      font-size: 1.15rem;
+      font-weight: 900;
     }
 
-    @media (max-width: 520px) {
-      .shell {
-        width: min(100% - 16px, 1120px);
-        padding-top: 10px;
-      }
+    .restart {
+      padding: 11px 18px;
+      color: white;
+      background: var(--blue);
+    }
 
-      .hero,
-      .scene,
-      .levelHead {
-        padding: 12px;
-      }
+    .tinyNote {
+      margin-top: 16px;
+      color: #77879a;
+      font-size: .83rem;
+      text-align: center;
+    }
 
-      .mapPath {
-        grid-template-columns: 1fr;
+    @media (max-width: 760px) {
+      .hero { grid-template-columns: 1fr; }
+      .heroArt { min-height: 130px; }
+      .questionGrid { grid-template-columns: 1fr; }
+      .question.wide { grid-column: auto; }
+      .wordTokens { grid-template-columns: repeat(2, minmax(80px,1fr)); }
+      .mapStep span { display: block; }
+      .progressWrap { position: static; }
+      #level3 { overflow: visible; }
+      #level3 .levelHead {
+        border: 3px solid rgba(56,120,232,.14);
+        border-radius: 26px 26px 0 0;
       }
+      #sortQuestion .sortArea {
+        position: sticky;
+        top: 8px;
+        z-index: 18;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        margin: 10px -6px 14px;
+        padding: 8px;
+        border: 2px solid #d7e2ef;
+        border-radius: 18px;
+        background: rgba(255,255,255,.97);
+        box-shadow: 0 8px 20px rgba(31,57,91,.14);
+        backdrop-filter: blur(8px);
+      }
+      #sortQuestion .sortBin {
+        min-height: 58px;
+        padding: 8px 5px;
+        border-width: 2px;
+        border-radius: 13px;
+      }
+      #sortQuestion .sortBin h4 { margin: 0; font-size: .95rem; }
+      #sortQuestion .binWords { display: none; }
+    }
 
-      .cardTop {
-        grid-template-columns: auto minmax(0, 1fr);
-      }
-
-      .choices {
-        grid-template-columns: 1fr;
-      }
-
-      .matchSteps,
-      .matchGrid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .matchStep {
-        min-height: 44px;
-      }
+    @media (max-width: 430px) {
+      .shell { width: min(100% - 12px, 1100px); padding-top: 7px; }
+      .hero, .level, .submitPanel, .result { border-radius: 20px; }
+      .levelHead { align-items: flex-start; }
+      .levelBadge { min-width: 58px; }
+      .mapStep { padding: 9px 5px; font-size: .78rem; }
+      .question { min-height: 235px; padding: 13px; }
+      .visual { gap: 14px; }
+      .visual .bus { max-width: 95px; }
+      .sortArea { grid-template-columns: 1fr; }
+      .block { width: 22px; height: 22px; }
     }
   </style>
 </head>
 <body>
   <main class="shell">
-    <section class="hero" aria-label="Treasure hunt introduction">
+    <header class="hero">
       <div>
-        <h1>Treasure Hunt Grammar Quest</h1>
-        <p class="intro">Find words, choose answers, and collect 22 gems to open the treasure chest.</p>
+        <span class="eyebrow">K3098 After-Class Review</span>
+        <h1>Measure & Sound Adventure</h1>
+        <p>Complete three missions. Compare length and height, measure with blocks, and become a clever sound detective!</p>
       </div>
-      <div class="treasureBox" id="treasureTarget" aria-label="Treasure progress">
-        <div class="chest" id="chest">
-          <div class="chestLid"></div>
-          <div class="chestBody"></div>
-          <div class="lock"></div>
+      <div class="heroArt" aria-hidden="true">
+        <div class="ruler"></div>
+        <div class="pencil"></div>
+      </div>
+    </header>
+
+    <section class="progressWrap" aria-label="Adventure progress">
+      <div class="progressTop">
+        <span>Adventure Progress</span>
+        <span id="progressText">0 / 31 answered</span>
+      </div>
+      <div class="bar"><div class="barFill" id="barFill"></div></div>
+    </section>
+
+    <nav class="map" aria-label="Level map">
+      <div class="mapStep" id="map1"><span>🌲 Level 1</span> Compare</div>
+      <div class="mapStep" id="map2"><span>🧱 Level 2</span> Measure</div>
+      <div class="mapStep" id="map3"><span>🔊 Level 3</span> Sounds</div>
+    </nav>
+
+    <section class="level" id="level1">
+      <div class="levelHead">
+        <div>
+          <h2>🌲 Level 1: Length & Height Forest</h2>
+          <p>Look carefully. Compare and order the objects.</p>
         </div>
-        <div class="gemCount"><span id="gemCount">0</span>/<span id="totalCount">22</span> gems</div>
+        <div class="levelBadge">5 pts</div>
+      </div>
+      <div class="questionGrid">
+        <article class="question" data-q="l1q1" data-answer="B">
+          <span class="qNumber">Mission 1</span>
+          <h3>Which pencil is longer?</h3>
+          <div class="visual">
+            <div class="visualItem"><div class="object pencilObj" style="width:90px;background:#64cf5f"></div><span class="objectLabel">A</span></div>
+            <div class="visualItem"><div class="object pencilObj" style="width:150px;background:#8c65d8"></div><span class="objectLabel">B</span></div>
+          </div>
+          <div class="choices">
+            <button class="choice" data-value="A">Pencil A</button>
+            <button class="choice" data-value="B">Pencil B</button>
+          </div>
+          <p class="feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="question" data-q="l1q2" data-answer="C">
+          <span class="qNumber">Mission 2</span>
+          <h3>Which bus is the shortest?</h3>
+          <div class="visual">
+            <div class="visualItem"><div class="object bus" style="width:130px"></div><span class="objectLabel">A</span></div>
+            <div class="visualItem"><div class="object bus" style="width:105px"></div><span class="objectLabel">B</span></div>
+            <div class="visualItem"><div class="object bus" style="width:73px"></div><span class="objectLabel">C</span></div>
+          </div>
+          <div class="choices">
+            <button class="choice" data-value="B">Bus B</button>
+            <button class="choice" data-value="C">Bus C</button>
+            <button class="choice" data-value="A">Bus A</button>
+          </div>
+          <p class="feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="question" data-q="l1q3" data-answer="C">
+          <span class="qNumber">Mission 3</span>
+          <h3>Which plant is the tallest?</h3>
+          <div class="visual" style="min-height:135px">
+            <div class="visualItem"><div class="object plant" style="--stem:48px"></div><span class="objectLabel">A</span></div>
+            <div class="visualItem"><div class="object plant" style="--stem:35px"></div><span class="objectLabel">B</span></div>
+            <div class="visualItem"><div class="object plant" style="--stem:76px"></div><span class="objectLabel">C</span></div>
+          </div>
+          <div class="choices">
+            <button class="choice" data-value="C">Plant C</button>
+            <button class="choice" data-value="A">Plant A</button>
+            <button class="choice" data-value="B">Plant B</button>
+          </div>
+          <p class="feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="question" data-q="l1q4" data-answer="B,A,C" data-order="true">
+          <span class="qNumber">Mission 4 · Tap in order</span>
+          <h3>Put the ropes in order from shortest to longest.</h3>
+          <div class="visual" style="align-items:center;flex-direction:column">
+            <div class="visualItem"><div class="object rope" style="width:120px"></div><span class="objectLabel">Rope A</span></div>
+            <div class="visualItem"><div class="object rope" style="width:72px"></div><span class="objectLabel">Rope B</span></div>
+            <div class="visualItem"><div class="object rope" style="width:165px"></div><span class="objectLabel">Rope C</span></div>
+          </div>
+          <div class="orderTray">Your order: <span class="orderText">—</span></div>
+          <div class="choices">
+            <button class="choice orderChoice" data-value="C">Rope C</button>
+            <button class="choice orderChoice" data-value="A">Rope A</button>
+            <button class="choice orderChoice" data-value="B">Rope B</button>
+          </div>
+          <p class="feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="question wide" data-q="l1q5" data-answer="A">
+          <span class="qNumber">Mission 5</span>
+          <h3>Which tower is taller?</h3>
+          <div class="visual" style="min-height:150px">
+            <div class="visualItem"><div class="object tower" style="height:112px"></div><span class="objectLabel">A</span></div>
+            <div class="visualItem"><div class="object tower" style="height:76px"></div><span class="objectLabel">B</span></div>
+          </div>
+          <div class="choices">
+            <button class="choice" data-value="B">Tower B</button>
+            <button class="choice" data-value="A">Tower A</button>
+          </div>
+          <p class="feedback" aria-live="polite"></p>
+        </article>
       </div>
     </section>
 
-    <section class="mapPath" aria-label="Map steps">
-      <div class="mapStep"><span class="mapIcon">🧭</span>Find the Word</div>
-      <div class="mapStep"><span class="mapIcon">🗺️</span>Magic Map</div>
-      <div class="mapStep"><span class="mapIcon">🌉</span>River Bridge</div>
-      <div class="mapStep"><span class="mapIcon">⛰️</span>Treasure Cave</div>
+    <section class="level" id="level2">
+      <div class="levelHead">
+        <div>
+          <h2>🧱 Level 2: Block Measurement Lab</h2>
+          <p>Each orange block is the same size. Count and compare.</p>
+        </div>
+        <div class="levelBadge">5 pts</div>
+      </div>
+      <div class="questionGrid">
+        <article class="question" data-q="l2q1" data-answer="7">
+          <span class="qNumber">Mission 6</span>
+          <h3>How long is the pencil?</h3>
+          <div class="blockLine"><span class="measureObject">✏️</span><span class="blocks" data-count="7"></span></div>
+          <div class="choices">
+            <button class="choice" data-value="8">8 blocks</button>
+            <button class="choice" data-value="6">6 blocks</button>
+            <button class="choice" data-value="7">7 blocks</button>
+          </div>
+          <p class="feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="question" data-q="l2q2" data-answer="6">
+          <span class="qNumber">Mission 7</span>
+          <h3>How tall is the rake?</h3>
+          <div class="blockLine"><span class="measureObject">🧹</span><span class="blocks" data-count="6"></span></div>
+          <div class="choices">
+            <button class="choice" data-value="5">5 blocks</button>
+            <button class="choice" data-value="7">7 blocks</button>
+            <button class="choice" data-value="6">6 blocks</button>
+          </div>
+          <p class="feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="question" data-q="l2q3" data-answer="A">
+          <span class="qNumber">Mission 8</span>
+          <h3>Ribbon A is 8 blocks long. Ribbon B is 6 blocks long. Which ribbon is longer?</h3>
+          <div class="visual" style="align-items:center;flex-direction:column">
+            <div class="visualItem"><div class="object rope" style="width:176px;background:#ef6c9d"></div><span class="objectLabel">Ribbon A · 8 blocks</span></div>
+            <div class="visualItem"><div class="object rope" style="width:132px;background:#42c7de"></div><span class="objectLabel">Ribbon B · 6 blocks</span></div>
+          </div>
+          <div class="choices">
+            <button class="choice" data-value="B">Ribbon B</button>
+            <button class="choice" data-value="A">Ribbon A</button>
+          </div>
+          <p class="feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="question" data-q="l2q4" data-answer="C">
+          <span class="qNumber">Mission 9</span>
+          <h3>Pipe A is 4 blocks long. Pipe B is 7 blocks long. Pipe C is 9 blocks long. Which pipe is the longest?</h3>
+          <div class="visual" style="align-items:center;flex-direction:column">
+            <div class="visualItem"><div class="object rope" style="width:88px;background:#7d9fb8"></div><span class="objectLabel">Pipe A · 4 blocks</span></div>
+            <div class="visualItem"><div class="object rope" style="width:154px;background:#7d9fb8"></div><span class="objectLabel">Pipe B · 7 blocks</span></div>
+            <div class="visualItem"><div class="object rope" style="width:198px;background:#7d9fb8"></div><span class="objectLabel">Pipe C · 9 blocks</span></div>
+          </div>
+          <div class="choices">
+            <button class="choice" data-value="A">Pipe A</button>
+            <button class="choice" data-value="B">Pipe B</button>
+            <button class="choice" data-value="C">Pipe C</button>
+          </div>
+          <p class="feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="question wide" data-q="l2q5" data-answer="7">
+          <span class="qNumber">Mission 10 · Problem solving</span>
+          <h3>A rope is 5 blocks long. Which rope is 2 blocks longer?</h3>
+          <div class="blockLine"><span class="measureObject">🪢</span><span class="blocks" data-count="5"></span></div>
+          <div class="choices">
+            <button class="choice" data-value="6">6-block rope</button>
+            <button class="choice" data-value="7">7-block rope</button>
+            <button class="choice" data-value="3">3-block rope</button>
+          </div>
+          <p class="feedback" aria-live="polite"></p>
+        </article>
+      </div>
     </section>
 
-    <section id="levels"></section>
+    <section class="level" id="level3">
+      <div class="levelHead">
+        <div>
+          <h2>🔊 Level 3: Sound Detective Castle</h2>
+          <p>Sort soft/hard C and G, then listen for the missing vowel.</p>
+        </div>
+        <div class="levelBadge">31 pts</div>
+      </div>
+      <div class="questionGrid" id="soundGrid">
+        <article class="question wide" id="sortQuestion" data-q="sort" data-answer="sort">
+          <span class="qNumber">Missions 11–26 · Tap a word, then tap its sound box</span>
+          <h3>Sort each word into Soft C, Hard C, Soft G, or Hard G.</h3>
+          <div class="sortArea">
+            <button class="sortBin" data-bin="soft-c"><h4>Soft C</h4><div class="binWords"></div></button>
+            <button class="sortBin" data-bin="hard-c"><h4>Hard C</h4><div class="binWords"></div></button>
+            <button class="sortBin" data-bin="soft-g"><h4>Soft G</h4><div class="binWords"></div></button>
+            <button class="sortBin" data-bin="hard-g"><h4>Hard G</h4><div class="binWords"></div></button>
+          </div>
+          <div class="wordTokens" id="wordTokens"></div>
+          <p class="feedback" aria-live="polite">Choose one word first.</p>
+        </article>
 
-    <section class="complete" id="completeBox" aria-live="polite">
-      <div class="coins">💎 🪙 💎</div>
-      <h2>You found the treasure!</h2>
-      <p>Great job! You finished all 22 grammar clues.</p>
-      <button class="reset" type="button" id="resetBtn">Play Again</button>
+        <p class="vowelIntro"><strong>Missions 27–41:</strong> Tap 🔊 Listen. Choose the missing middle vowel. The questions and vowel buttons are mixed—listen carefully!</p>
+      </div>
     </section>
+
+    <section class="submitPanel">
+      <h2>Ready to finish your adventure?</h2>
+      <p id="submitHelp">Answer all 41 missions to unlock the final button.</p>
+      <button class="submit" id="submitBtn" disabled>Submit My Quest</button>
+    </section>
+
+    <section class="result" id="result" aria-live="polite">
+      <div class="rewardArt" aria-hidden="true" id="rewardArt"></div>
+      <div class="stars" id="stars"></div>
+      <div class="scoreText" id="scoreText"></div>
+      <div class="encourage" id="encourage"></div>
+      <button class="restart" id="restartBtn">Try Again</button>
+    </section>
+
+    <p class="tinyNote">Audio uses the free voice built into your browser. No names or personal information are collected.</p>
   </main>
 
   <script>
-    const levels = [
-      {
-        title: "Level 1: Find the Word",
-        rule: "Match the same treasure words.",
-        imageType: "words",
-        matchItems: [
-          { id: "m1", word: "am", audio: "am. I am a girl." },
-          { id: "m2", word: "is", audio: "is. She is a girl." },
-          { id: "m3", word: "are", audio: "are. They are cats." },
-          { id: "m4", word: "my", audio: "my. This is my ball." },
-          { id: "m5", word: "your", audio: "your. This is your teddy bear." },
-          { id: "m6", word: "do", audio: "do. Do they eat ice cream?" },
-          { id: "m7", word: "does", audio: "does. Does he play soccer?" }
-        ]
-      },
-      {
-        title: "Level 2: Magic Map",
-        rule: "Choose am, is, or are.",
-        imageType: "island",
-        questions: [
-          { id: "q1", icon: "👧", text: "I ___ a girl.", choices: ["am", "is", "are"], answer: "am", complete: "I am a girl." },
-          { id: "q2", icon: "👧", text: "She ___ a girl.", choices: ["am", "is", "are"], answer: "is", complete: "She is a girl." },
-          { id: "q3", icon: "👨‍⚕️", text: "He ___ a doctor.", choices: ["am", "is", "are"], answer: "is", complete: "He is a doctor." },
-          { id: "q4", icon: "🐶", text: "It ___ a dog.", choices: ["am", "is", "are"], answer: "is", complete: "It is a dog." },
-          { id: "q5", icon: "🐱", text: "They ___ cats.", choices: ["am", "is", "are"], answer: "are", complete: "They are cats." },
-          { id: "q6", icon: "👫", text: "We ___ friends.", choices: ["am", "is", "are"], answer: "are", complete: "We are friends." }
-        ]
-      },
-      {
-        title: "Level 3: River Bridge",
-        rule: "Choose Do or Does.",
-        imageType: "bridge",
-        questions: [
-          { id: "q7", icon: "⚽", text: "___ he play soccer?", choices: ["Do", "Does"], answer: "Does", complete: "Does he play soccer?" },
-          { id: "q8", icon: "📖", text: "___ she read a book?", choices: ["Do", "Does"], answer: "Does", complete: "Does she read a book?" },
-          { id: "q9", icon: "🍦", text: "___ they eat ice cream?", choices: ["Do", "Does"], answer: "Do", complete: "Do they eat ice cream?" },
-          { id: "q10", icon: "🏫", text: "___ we go to school?", choices: ["Do", "Does"], answer: "Do", complete: "Do we go to school?" }
-        ]
-      },
-      {
-        title: "Level 4: Treasure Cave",
-        rule: "Mixed review. Find the last gems.",
-        imageType: "cave",
-        questions: [
-          { id: "q11", icon: "👩‍🏫", text: "You ___ my teacher.", choices: ["am", "is", "are"], answer: "are", complete: "You are my teacher." },
-          { id: "q12", icon: "🐱", text: "The cat ___ on the mat.", choices: ["am", "is", "are"], answer: "is", complete: "The cat is on the mat." },
-          { id: "q13", icon: "🐶", text: "___ the dog bark?", choices: ["Do", "Does"], answer: "Does", complete: "Does the dog bark?" },
-          { id: "q14", icon: "🏈", text: "___ you play football?", choices: ["Do", "Does"], answer: "Do", complete: "Do you play football?" },
-          { id: "q15", icon: "😊", text: "I ___ happy today.", choices: ["am", "is", "are"], answer: "am", complete: "I am happy today." }
-        ]
-      }
+    const totalPoints = 41;
+    const answers = {};
+    const correctness = {};
+    const orderProgress = {};
+
+    const cvcWords = [
+      { word: "dog", display: "d_g", answer: "o", choices: ["i","o","a","u","e"] },
+      { word: "pen", display: "p_n", answer: "e", choices: ["u","a","e","i","o"] },
+      { word: "sun", display: "s_n", answer: "u", choices: ["e","u","o","a","i"] },
+      { word: "map", display: "m_p", answer: "a", choices: ["o","i","u","e","a"] },
+      { word: "sit", display: "s_t", answer: "i", choices: ["a","e","i","o","u"] },
+      { word: "fox", display: "f_x", answer: "o", choices: ["u","o","e","i","a"] },
+      { word: "hen", display: "h_n", answer: "e", choices: ["i","a","o","e","u"] },
+      { word: "cup", display: "c_p", answer: "u", choices: ["o","e","a","u","i"] },
+      { word: "cat", display: "c_t", answer: "a", choices: ["e","i","a","u","o"] },
+      { word: "fin", display: "f_n", answer: "i", choices: ["u","a","o","i","e"] },
+      { word: "log", display: "l_g", answer: "o", choices: ["a","u","i","e","o"] },
+      { word: "bed", display: "b_d", answer: "e", choices: ["o","e","u","a","i"] },
+      { word: "bus", display: "b_s", answer: "u", choices: ["i","o","u","e","a"] },
+      { word: "jam", display: "j_m", answer: "a", choices: ["u","e","o","a","i"] },
+      { word: "pig", display: "p_g", answer: "i", choices: ["e","a","u","o","i"] }
     ];
 
-    const answered = new Set();
-    const levelsEl = document.querySelector("#levels");
-    const gemCountEl = document.querySelector("#gemCount");
-    const totalCountEl = document.querySelector("#totalCount");
-    const treasureTarget = document.querySelector("#treasureTarget");
-    const chestEl = document.querySelector("#chest");
-    const completeBox = document.querySelector("#completeBox");
-    const totalQuestions = levels.reduce((sum, level) => {
-      return sum + (level.questions?.length || 0) + (level.matchItems?.length || 0);
-    }, 0);
-    let audioContext;
-    let selectedMatch = null;
+    const sortWords = [
+      { word: "face", answer: "soft-c" },
+      { word: "dog", answer: "hard-g" },
+      { word: "circle", answer: "soft-c" },
+      { word: "cut", answer: "hard-c" },
+      { word: "giant", answer: "soft-g" },
+      { word: "age", answer: "soft-g" },
+      { word: "city", answer: "soft-c" },
+      { word: "rice", answer: "soft-c" },
+      { word: "cat", answer: "hard-c" },
+      { word: "cup", answer: "hard-c" },
+      { word: "corn", answer: "hard-c" },
+      { word: "gem", answer: "soft-g" },
+      { word: "giraffe", answer: "soft-g" },
+      { word: "goat", answer: "hard-g" },
+      { word: "game", answer: "hard-g" },
+      { word: "gum", answer: "hard-g" }
+    ];
+
+    document.querySelectorAll(".blocks").forEach(el => {
+      const count = Number(el.dataset.count);
+      el.innerHTML = Array.from({ length: count }, () => '<span class="block"></span>').join("");
+      el.style.display = "flex";
+      el.style.gap = "3px";
+    });
+
+    document.querySelectorAll(".question[data-answer]:not([data-order]):not(#sortQuestion)").forEach(card => {
+      card.querySelectorAll(".choice").forEach(button => {
+        button.addEventListener("click", () => chooseAnswer(card, button));
+      });
+    });
+
+    document.querySelectorAll("[data-order='true']").forEach(card => {
+      orderProgress[card.dataset.q] = [];
+      card.querySelectorAll(".orderChoice").forEach(button => {
+        button.addEventListener("click", () => chooseOrder(card, button));
+      });
+    });
+
+    function chooseAnswer(card, button) {
+      const q = card.dataset.q;
+      card.querySelectorAll(".choice").forEach(b => b.classList.remove("selected"));
+      button.classList.add("selected");
+      answers[q] = button.dataset.value;
+      correctness[q] = button.dataset.value === card.dataset.answer;
+      const feedback = card.querySelector(".feedback");
+      if (correctness[q]) {
+        feedback.textContent = "Great looking! Answer saved.";
+        feedback.className = "feedback good";
+      } else {
+        feedback.textContent = card.closest("#level3")
+          ? "Listen again and focus on the middle sound."
+          : "Look again. Compare from the same starting point.";
+        feedback.className = "feedback try";
+      }
+      updateProgress();
+    }
+
+    function chooseOrder(card, button) {
+      const q = card.dataset.q;
+      const sequence = orderProgress[q];
+      if (sequence.includes(button.dataset.value)) return;
+      sequence.push(button.dataset.value);
+      button.classList.add("selected");
+      card.querySelector(".orderText").textContent = sequence.join(" → ");
+      if (sequence.length === 3) {
+        answers[q] = sequence.join(",");
+        correctness[q] = answers[q] === card.dataset.answer;
+        const feedback = card.querySelector(".feedback");
+        feedback.textContent = correctness[q]
+          ? "Excellent ordering! Answer saved."
+          : "Try again: begin with the shortest rope.";
+        feedback.className = correctness[q] ? "feedback good" : "feedback try";
+        if (!correctness[q]) {
+          setTimeout(() => {
+            sequence.length = 0;
+            delete answers[q];
+            delete correctness[q];
+            card.querySelector(".orderText").textContent = "—";
+            card.querySelectorAll(".choice").forEach(b => b.classList.remove("selected"));
+            updateProgress();
+          }, 900);
+        }
+      }
+      updateProgress();
+    }
+
+    const wordTokens = document.getElementById("wordTokens");
+    let selectedWord = null;
+    const sortAnswers = {};
+
+    sortWords.forEach(item => {
+      const button = document.createElement("button");
+      button.className = "wordToken";
+      button.textContent = item.word;
+      button.dataset.word = item.word;
+      button.dataset.answer = item.answer;
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".wordToken").forEach(b => b.classList.remove("active"));
+        selectedWord = button;
+        button.classList.add("active");
+        speak(item.word);
+        document.querySelector("#sortQuestion .feedback").textContent = `Now choose a sound box for “${item.word}”.`;
+      });
+      wordTokens.appendChild(button);
+    });
+
+    document.querySelectorAll(".sortBin").forEach(bin => {
+      bin.addEventListener("click", () => {
+        const feedback = document.querySelector("#sortQuestion .feedback");
+        if (!selectedWord) {
+          feedback.textContent = "Choose one word first.";
+          feedback.className = "feedback try";
+          return;
+        }
+        const word = selectedWord.dataset.word;
+        const isCorrect = selectedWord.dataset.answer === bin.dataset.bin;
+        sortAnswers[word] = isCorrect;
+        answers[`sort-${word}`] = bin.dataset.bin;
+        correctness[`sort-${word}`] = isCorrect;
+        const chip = document.createElement("span");
+        chip.className = "placedWord";
+        chip.textContent = word;
+        bin.querySelector(".binWords").appendChild(chip);
+        selectedWord.classList.remove("active");
+        selectedWord.classList.add("placed");
+        selectedWord = null;
+        feedback.textContent = isCorrect
+          ? "Sound sorted! Choose another word."
+          : "Answer saved. Listen to the first or last sound again.";
+        feedback.className = isCorrect ? "feedback good" : "feedback try";
+        updateProgress();
+      });
+    });
+
+    const soundGrid = document.getElementById("soundGrid");
+    cvcWords.forEach((item, index) => {
+      const card = document.createElement("article");
+      card.className = "question";
+      card.dataset.q = `vowel-${index}`;
+      card.dataset.answer = item.answer;
+      card.innerHTML = `
+        <span class="qNumber">Mission ${27 + index}</span>
+        <h3>Listen and choose the missing vowel.</h3>
+        <button class="listen" type="button">🔊 Listen</button>
+        <div class="cvc">${item.display}</div>
+        <div class="choices">
+          ${item.choices.map(v => `<button class="choice" data-value="${v}">${v}</button>`).join("")}
+        </div>
+        <p class="feedback" aria-live="polite"></p>`;
+      card.querySelector(".listen").addEventListener("click", () => speak(item.word));
+      card.querySelectorAll(".choice").forEach(button => {
+        button.addEventListener("click", () => chooseAnswer(card, button));
+      });
+      soundGrid.appendChild(card);
+    });
+
+    document.querySelectorAll(".question").forEach(card => {
+      if (card.querySelector(".listen")) return;
+      const heading = card.querySelector("h3");
+      if (!heading) return;
+      const button = document.createElement("button");
+      button.className = "listen questionListen";
+      button.type = "button";
+      button.textContent = "🔊 Listen to the question";
+      button.addEventListener("click", () => speak(heading.textContent.trim()));
+      heading.insertAdjacentElement("afterend", button);
+    });
 
     function speak(text) {
-      if (!("speechSynthesis" in window)) {
-        alert("This browser does not support question audio.");
-        return;
-      }
-
+      if (!("speechSynthesis" in window)) return;
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      const voices = window.speechSynthesis.getVoices();
-      const preferred = voices.find((voice) =>
-        /Samantha|Karen|Google US English|Microsoft Aria|Microsoft Jenny/i.test(voice.name)
-      );
-
-      if (preferred) utterance.voice = preferred;
       utterance.lang = "en-US";
-      utterance.rate = 0.86;
-      utterance.pitch = 1.06;
+      utterance.rate = 0.84;
+      utterance.pitch = 1.05;
+      const voices = window.speechSynthesis.getVoices();
+      utterance.voice = voices.find(v => /Samantha|Karen|Google US English/i.test(v.name))
+        || voices.find(v => /^en[-_](US|GB|AU)/i.test(v.lang))
+        || null;
       window.speechSynthesis.speak(utterance);
     }
 
-    function playGemSound() {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return;
-      audioContext = audioContext || new AudioCtx();
-      const now = audioContext.currentTime;
-      const gain = audioContext.createGain();
-      gain.gain.setValueAtTime(0.001, now);
-      gain.gain.exponentialRampToValueAtTime(0.18, now + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
-      gain.connect(audioContext.destination);
-
-      [740, 980, 1240].forEach((freq, index) => {
-        const osc = audioContext.createOscillator();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(freq, now + index * 0.055);
-        osc.connect(gain);
-        osc.start(now + index * 0.055);
-        osc.stop(now + 0.32 + index * 0.04);
-      });
-    }
-
-    function playWinSound() {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return;
-      audioContext = audioContext || new AudioCtx();
-      const now = audioContext.currentTime;
-      const gain = audioContext.createGain();
-      gain.gain.setValueAtTime(0.001, now);
-      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
-      gain.connect(audioContext.destination);
-
-      [523, 659, 784, 1047].forEach((freq, index) => {
-        const osc = audioContext.createOscillator();
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(freq, now + index * 0.13);
-        osc.connect(gain);
-        osc.start(now + index * 0.13);
-        osc.stop(now + 0.26 + index * 0.13);
-      });
-    }
-
-    function makeSparks(x, y) {
-      for (let i = 0; i < 9; i += 1) {
-        const spark = document.createElement("span");
-        spark.className = "spark";
-        spark.style.left = `${x}px`;
-        spark.style.top = `${y}px`;
-        spark.style.setProperty("--spark-x", `${Math.cos(i) * (26 + i * 4)}px`);
-        spark.style.setProperty("--spark-y", `${Math.sin(i) * (26 + i * 4)}px`);
-        document.body.appendChild(spark);
-        spark.addEventListener("animationend", () => spark.remove());
-      }
-    }
-
-    function flyGem(fromEl) {
-      const start = fromEl.getBoundingClientRect();
-      const end = treasureTarget.getBoundingClientRect();
-      const gem = document.createElement("span");
-      gem.className = "gemFly";
-      gem.textContent = "💎";
-      const startX = start.left + start.width / 2;
-      const startY = start.top + start.height / 2;
-      const endX = end.left + end.width / 2;
-      const endY = end.top + end.height / 2;
-      gem.style.left = `${startX}px`;
-      gem.style.top = `${startY}px`;
-      gem.style.setProperty("--gem-x", `${endX - startX}px`);
-      gem.style.setProperty("--gem-y", `${endY - startY}px`);
-      document.body.appendChild(gem);
-      makeSparks(startX, startY);
-      gem.addEventListener("animationend", () => {
-        makeSparks(endX, endY);
-        gem.remove();
-      });
-    }
-
     function updateProgress() {
-      gemCountEl.textContent = answered.size;
-      totalCountEl.textContent = totalQuestions;
-      const isDone = answered.size === totalQuestions;
-      chestEl.classList.toggle("open", isDone);
-      completeBox.classList.toggle("show", isDone);
+      const answered = Object.keys(answers).length;
+      document.getElementById("progressText").textContent = `${answered} / ${totalPoints} answered`;
+      document.getElementById("barFill").style.width = `${(answered / totalPoints) * 100}%`;
+      document.getElementById("submitBtn").disabled = answered !== totalPoints;
+      document.getElementById("submitHelp").textContent = answered === totalPoints
+        ? "All missions are answered. Your final button is ready!"
+        : `Answer ${totalPoints - answered} more mission${totalPoints - answered === 1 ? "" : "s"} to unlock the final button.`;
+      document.getElementById("map1").classList.toggle("done", ["l1q1","l1q2","l1q3","l1q4","l1q5"].every(q => q in answers));
+      document.getElementById("map2").classList.toggle("done", ["l2q1","l2q2","l2q3","l2q4","l2q5"].every(q => q in answers));
+      document.getElementById("map3").classList.toggle("done",
+        sortWords.every(w => `sort-${w.word}` in answers) &&
+        cvcWords.every((_, i) => `vowel-${i}` in answers)
+      );
     }
 
-    function chooseAnswer(question, card, button) {
-      const choices = card.querySelectorAll(".choice");
-      const feedback = card.querySelector(".feedback");
-      choices.forEach((choice) => choice.classList.remove("correct", "wrong"));
-
-      if (button.dataset.choice === question.answer) {
-        button.classList.add("correct");
-        feedback.textContent = "Gem collected!";
-        feedback.className = "feedback good";
-        speak(`${question.answer}. ${question.complete}`);
-        answered.add(question.id);
-        choices.forEach((choice) => {
-          choice.disabled = true;
-          if (choice !== button) choice.style.opacity = "0.6";
-        });
-        flyGem(button);
-        setTimeout(playGemSound, 650);
-        const wasLast = answered.size === totalQuestions;
-        updateProgress();
-        if (wasLast) playWinSound();
-      } else {
-        button.classList.add("wrong");
-        feedback.textContent = "Look at the picture and try again.";
-        feedback.className = "feedback try";
-      }
-    }
-
-    function chooseMatch(item, button, board) {
-      if (button.classList.contains("correct")) return;
-      if (board.dataset.locked === "true") return;
-      if (selectedMatch?.button === button) return;
-
-      button.classList.add("is-flipped");
-
-      if (!selectedMatch) {
-        selectedMatch = { item, button };
-        button.classList.add("selected");
-        return;
-      }
-
-      if (selectedMatch.item.word === item.word) {
-        selectedMatch.button.classList.remove("selected");
-        button.classList.add("correct");
-        selectedMatch.button.classList.add("correct");
-        answered.add(item.id);
-        speak(item.audio);
-        flyGem(button);
-        setTimeout(playGemSound, 650);
-        const wasLast = answered.size === totalQuestions;
-        updateProgress();
-        if (wasLast) playWinSound();
-      } else {
-        const wrongLeft = selectedMatch.button;
-        board.dataset.locked = "true";
-        button.classList.add("wrong");
-        wrongLeft.classList.add("wrong");
-        setTimeout(() => {
-          button.classList.remove("wrong", "is-flipped");
-          wrongLeft.classList.remove("wrong", "selected", "is-flipped");
-          if (selectedMatch?.button === wrongLeft) selectedMatch = null;
-          board.dataset.locked = "false";
-        }, 700);
-        return;
-      }
-
-      selectedMatch = null;
-    }
-
-    function renderPicture(type) {
-      if (type === "toys") {
-        return "";
-      }
-
-      const icons = type === "bridge"
-        ? ["⚽", "📖", "🍦", "🏫", "🌉", "💎"]
-        : type === "cave"
-          ? ["👩‍🏫", "🐱", "🐶", "🏈", "😊", "🪙"]
-          : type === "words"
-            ? ["am", "is", "are", "my", "your", "do", "does", "💎"]
-          : ["👧", "👨‍⚕️", "🐶", "🐱", "👫", "💎"];
-
-      return `
-        <div class="picturePanel">
-          <div class="islandArt" aria-hidden="true">
-            <div class="sun"></div>
-            <div class="palm">🌴</div>
-            <div class="boat">${type === "cave" ? "⛰️" : type === "bridge" ? "🌉" : "⛵"}</div>
-            <div class="clueGrid">
-              ${icons.map((icon) => `<div class="clue">${icon}</div>`).join("")}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderMatching(level) {
-      const board = document.createElement("div");
-      board.className = "matchBoard";
-      const cardItems = [
-        level.matchItems[0], level.matchItems[3], level.matchItems[1], level.matchItems[5],
-        level.matchItems[2], level.matchItems[6], level.matchItems[4], level.matchItems[0],
-        level.matchItems[5], level.matchItems[2], level.matchItems[1], level.matchItems[4],
-        level.matchItems[6], level.matchItems[3]
-      ];
-
-      board.innerHTML = `
-        <div class="matchHelp">
-          <p class="matchHelpTitle">Tap two cards. Match the same word to collect a gem.</p>
-          <div class="matchSteps" aria-label="How to play">
-            <div class="matchStep">1. Tap one card</div>
-            <div class="matchStep">2. Tap the same word</div>
-            <div class="matchStep">3. Collect a gem</div>
-          </div>
-        </div>
-        <div class="matchGrid" aria-label="Word matching cards"></div>
-      `;
-
-      const grid = board.querySelector(".matchGrid");
-
-      cardItems.forEach((item, index) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "matchCard";
-        button.setAttribute("aria-label", `Card ${index + 1}`);
-        button.innerHTML = `
-          <span class="matchCardInner">
-            <span class="matchFace matchBack" aria-hidden="true">💎</span>
-            <span class="matchFace matchFront">${item.word}</span>
-          </span>
-        `;
-        button.addEventListener("click", () => chooseMatch(item, button, board));
-        grid.appendChild(button);
-      });
-
-      return board;
-    }
-
-    function renderQuestion(question) {
-      const card = document.createElement("article");
-      card.className = "card";
-      card.innerHTML = `
-        ${question.image ? `<img class="questionShot" src="${question.image}" alt="">` : ""}
-        <div class="cardTop">
-          <div class="miniPic" aria-hidden="true">${question.icon}</div>
-          <p class="question">${question.text}</p>
-        </div>
-        <div class="choices"></div>
-        <p class="feedback" aria-live="polite"></p>
-      `;
-
-      const choicesEl = card.querySelector(".choices");
-      question.choices.forEach((choice) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "choice";
-        button.textContent = choice;
-        button.dataset.choice = choice;
-        button.addEventListener("click", () => chooseAnswer(question, card, button));
-        choicesEl.appendChild(button);
-      });
-      return card;
-    }
-
-    function renderLevels() {
-      levelsEl.innerHTML = "";
-      levels.forEach((level) => {
-        const section = document.createElement("section");
-        section.className = "level";
-        section.innerHTML = `
-          <div class="levelHead">
-            <div>
-              <h2 class="levelTitle">${level.title}</h2>
-              <p class="levelRule">${level.rule}</p>
-            </div>
-          </div>
-          <div class="scene ${level.imageType === "toys" ? "questionsOnly" : ""}">
-            ${renderPicture(level.imageType)}
-            <div class="questions"></div>
-          </div>
-        `;
-
-        const questionsEl = section.querySelector(".questions");
-        if (level.matchItems) {
-          questionsEl.appendChild(renderMatching(level));
-        } else {
-          level.questions.forEach((question) => questionsEl.appendChild(renderQuestion(question)));
-        }
-        levelsEl.appendChild(section);
-      });
-    }
-
-    document.querySelector("#resetBtn").addEventListener("click", () => {
-      answered.clear();
-      selectedMatch = null;
-      renderLevels();
-      updateProgress();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const score = Object.values(correctness).filter(Boolean).length;
+      revealAnswers();
+      showResult(score);
     });
 
-    window.speechSynthesis?.addEventListener?.("voiceschanged", () => {});
-    renderLevels();
+    function revealAnswers() {
+      document.querySelectorAll(".question[data-answer]:not([data-order]):not(#sortQuestion)").forEach(card => {
+        card.querySelectorAll(".choice").forEach(button => {
+          button.disabled = true;
+          button.classList.remove("selected");
+          if (button.dataset.value === card.dataset.answer) button.classList.add("correct");
+          else if (answers[card.dataset.q] === button.dataset.value) button.classList.add("wrong");
+        });
+      });
+      document.querySelectorAll("[data-order='true'] .choice").forEach(button => button.disabled = true);
+      document.querySelectorAll(".sortBin, .wordToken").forEach(button => button.disabled = true);
+      document.getElementById("submitBtn").disabled = true;
+    }
+
+    function showResult(score) {
+      const stars = Math.max(1, Math.ceil((score / totalPoints) * 5));
+      let message = "Keep going, little sound hunter!";
+      let face = "😊";
+      if (score >= 37) { message = "Amazing! You are a measurement and sound superstar!"; face = "🤩"; }
+      else if (score >= 31) { message = "Great work! Your skills are getting stronger!"; face = "😄"; }
+      else if (score >= 21) { message = "Good try! Look, listen, and try once more!"; face = "🙂"; }
+      document.getElementById("rewardArt").innerHTML =
+        Array.from({length: 12}, (_, i) => `<span class="ray" style="transform:rotate(${i * 30}deg)"></span>`).join("") +
+        `<div class="sunFace">${face}</div>`;
+      document.getElementById("stars").textContent = "★".repeat(stars) + "☆".repeat(5 - stars);
+      document.getElementById("scoreText").textContent = `${score} / ${totalPoints}`;
+      document.getElementById("encourage").textContent = message;
+      const result = document.getElementById("result");
+      result.classList.add("show");
+      result.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    document.getElementById("restartBtn").addEventListener("click", () => location.reload());
     updateProgress();
   </script>
 </body>
