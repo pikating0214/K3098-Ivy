@@ -311,6 +311,12 @@
       text-align: center;
     }
 
+    .plantVisual {
+      min-height: 185px !important;
+      padding-top: 52px;
+      overflow: visible;
+    }
+
     .objectLabel {
       display: block;
       min-width: 34px;
@@ -733,6 +739,10 @@
       .question { min-height: 235px; padding: 13px; }
       .visual { gap: 14px; }
       .visual .bus { max-width: 95px; }
+      .plantVisual {
+        min-height: 205px !important;
+        padding-top: 68px;
+      }
       .sortArea { grid-template-columns: 1fr; }
       .block { width: 22px; height: 22px; }
     }
@@ -808,7 +818,7 @@
         <article class="question" data-q="l1q3" data-answer="C">
           <span class="qNumber">Mission 3</span>
           <h3>Which plant is the tallest?</h3>
-          <div class="visual" style="min-height:135px">
+          <div class="visual plantVisual">
             <div class="visualItem"><div class="object plant" style="--stem:48px"></div><span class="objectLabel">A</span></div>
             <div class="visualItem"><div class="object plant" style="--stem:35px"></div><span class="objectLabel">B</span></div>
             <div class="visualItem"><div class="object plant" style="--stem:76px"></div><span class="objectLabel">C</span></div>
